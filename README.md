@@ -6,6 +6,14 @@ Built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, **Fast
 
 ---
 
+## 🌐 Live Deployment
+
+- **Frontend (Vercel)**: `https://<your-vercel-app>.vercel.app`
+- **Backend API & Swagger (Render)**: `https://<your-render-app>.onrender.com` / [`/docs`](https://<your-render-app>.onrender.com/docs)
+- **API Health Check**: `https://<your-render-app>.onrender.com/api/health`
+
+---
+
 ## ✨ Key Features
 
 - 🎧 **Synchronized Playback Engine**: Pluggable playback engine featuring both real HTML5 audio support and an elapsed-time **Simulated Clock Engine** powered by `performance.now()`. Immune to background-tab timer throttling.
