@@ -132,11 +132,15 @@ export class AudioEngine implements PlaybackEngine {
       this.audio.id = "active-meeting-audio";
       this.audio.style.display = "none";
       document.body.appendChild(this.audio);
-      (window as any).__AUDIO_ELEMENT__ = this.audio;
+      if (process.env.NODE_ENV !== "production") {
+        (window as any).__AUDIO_ELEMENT__ = this.audio;
+      }
     }
 
     this.audio.addEventListener("loadedmetadata", () => {
-      console.log(`[AudioEngine] Audio loaded: ${fullUrl}, duration: ${this.audio.duration}s`);
+      if (process.env.NODE_ENV !== "production") {
+        console.log(`[AudioEngine] Audio loaded: ${fullUrl}, duration: ${this.audio.duration}s`);
+      }
     });
 
     this.audio.addEventListener("play", () => {
@@ -193,6 +197,9 @@ export class AudioEngine implements PlaybackEngine {
     this.listeners.clear();
     if (this.audio.parentNode) {
       this.audio.parentNode.removeChild(this.audio);
+    }
+    if (typeof window !== "undefined" && (window as any).__AUDIO_ELEMENT__ === this.audio) {
+      delete (window as any).__AUDIO_ELEMENT__;
     }
     this.audio.src = "";
   }
