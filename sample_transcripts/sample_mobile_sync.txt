@@ -1,0 +1,4 @@
+David Kim: Welcome to the mobile app architecture sync. Let's align on the offline audio caching strategy.
+Priya Sharma: I will implement the background audio upload worker with exponential backoff retries by Wednesday.
+David Kim: Great. We should also verify that the simulated clock engine stays within 50ms of audio time during tab throttling.
+Sarah Chen: I'll review the pull request once the integration tests pass on GitHub Actions.

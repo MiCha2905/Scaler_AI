@@ -1,0 +1,22 @@
+{
+  "segments": [
+    {
+      "speaker": "Elena Rostova",
+      "text": "Let's review the customer stories page mockup and video testimonial widgets.",
+      "start_sec": 0.0,
+      "end_sec": 6.5
+    },
+    {
+      "speaker": "Marcus Johnson",
+      "text": "The case study with Acme Corp is approved by their legal team. I'll publish the final blog copy tomorrow.",
+      "start_sec": 7.0,
+      "end_sec": 14.2
+    },
+    {
+      "speaker": "Elena Rostova",
+      "text": "Excellent. We need to deploy the interactive transcript player component on the marketing landing page.",
+      "start_sec": 15.0,
+      "end_sec": 22.0
+    }
+  ]
+}

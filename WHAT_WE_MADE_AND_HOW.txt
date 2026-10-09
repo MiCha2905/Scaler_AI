@@ -1,0 +1,314 @@
+================================================================================
+                    FIREFLIES.AI CLONE — MEETING INTELLIGENCE PLATFORM
+                              WHAT WE MADE AND HOW WE BUILT IT
+================================================================================
+
+TABLE OF CONTENTS:
+1. Executive Summary
+2. Core Features (What We Built)
+3. Architecture & Tech Stack
+4. Backend Deep Dive (FastAPI & Database)
+5. Frontend Deep Dive (Next.js 14, TypeScript & Tailwind CSS)
+6. Voice Synthesis & Spoken Speech Synchronization Engine
+7. Click-to-Speak & Interactive Playback System
+8. AI Pipeline, Prompt Engineering & User Identity Context
+9. Ingestion, Search & Export Systems
+10. Key Engineering Challenges Solved & Reliability Enhancements
+11. How to Run, Test and Verify the Platform
+
+================================================================================
+1. EXECUTIVE SUMMARY
+================================================================================
+We built an enterprise-grade, full-stack Meeting Intelligence Platform modeled 
+after Fireflies.ai. The platform ingests meeting recordings/transcripts, synthesizes 
+lifelike multi-speaker audio using zero-cost Microsoft Edge Neural TTS, and delivers 
+real-time, bidirectional synchronized audio playback with live transcript highlighting.
+
+It extracts structured AI executive summaries, clickable timeline chapters, and 
+action items with speaker attribution, and provides an interactive "Ask AI" meeting 
+copilot that understands participant identities (including current user Sarah Chen).
+
+================================================================================
+2. CORE FEATURES (WHAT WE BUILT)
+================================================================================
+- Multi-Format Transcript Ingestion:
+  * Supports uploading .vtt, .json, and .txt files, or pasting raw text.
+  * Enforces a 2MB upload limit with clear error states.
+  * Synthesizes word-count-based timestamps for plain text without timestamps.
+
+- 100% Free Neural Multi-Speaker Voice Generation (Edge Neural TTS):
+  * Zero paid OpenAI API keys needed for voice generation.
+  * Automatically assigns distinct neural voice personas based on participant names
+    (e.g., Sarah -> JennyNeural, Alex -> GuyNeural, Marcus -> ChristopherNeural, 
+     Elena -> AriaNeural, David -> EricNeural, Priya -> NeerjaNeural).
+  * Synthesizes audio turn-by-turn with millisecond-exact spoken speech alignment.
+
+- Bidirectional Synchronized Playback & Click-to-Speak:
+  * Real HTML5 audio streaming with an elapsed-time Simulated Clock fallback 
+    powered by performance.now() (immune to background tab throttling).
+  * Binary search O(log N) active segment highlighting.
+  * Instant 0ms Seek & Speak: Clicking ANY transcript turn box, chapter marker, 
+    or chat timestamp immediately seeks playback and starts speaking from that turn.
+
+- AI Executive Summaries, Chapters & Action Items:
+  * Structured markdown summary with bulleted takeaways.
+  * Key discussion topics with duration badges.
+  * Clickable chapter timeline markers.
+  * Action items with assignee badges and due dates.
+  * Offline heuristic fallback engine: Works 100% reliably even without LLM API keys.
+
+- Interactive Meeting Copilot ("Ask AI"):
+  * Context-aware meeting chatbot that answers questions based on the transcript.
+  * Knows user identity (Sarah Chen, Head of Product) and team roles.
+  * Returns formatted markdown responses with interactive [MM:SS] clickable badges.
+
+- Real-Time In-Transcript & Global Search:
+  * Global search across all meetings, topics, and speakers.
+  * In-transcript search with match counters ("3 of 12") and Next/Previous navigation.
+  * URL query parameter deep-linking (?t=MM:SS).
+
+- Participant Management & Meeting Lifecycle:
+  * Many-to-many participant relationships across meetings.
+  * Clean participant unlinking in service layer.
+  * Full CRUD operations: Create, Edit (title, date), Regenerate Audio, and Delete.
+
+- Export Capabilities:
+  * Export transcript and summary to Markdown (.md), Plain Text (.txt), and JSON (.json).
+
+- Fireflies Design System & Dark/Light Mode:
+  * High-contrast dark and light modes.
+  * Accessible Radix UI dialogs, smooth seekbar scrubbing, and responsive layouts.
+
+================================================================================
+3. ARCHITECTURE & TECH STACK
+================================================================================
+
+Frontend Architecture:
+----------------------
+- Framework: Next.js 14 (App Router)
+- Language: TypeScript (strict type checking)
+- Styling: Tailwind CSS with custom Fireflies design system (custom brand purple palette)
+- Icons: Lucide React
+- Audio & State: Custom React hooks (usePlayer, useAudioPlayer)
+- API Client: Typed Fetch wrapper with error handling
+
+Backend Architecture:
+---------------------
+- Framework: FastAPI (high-performance async Python)
+- Database: SQLite with SQLAlchemy 2.0 ORM & Pydantic v2 schemas
+- TTS Engine: edge-tts (Microsoft Edge Neural Text-to-Speech)
+- Audio Processing: MPEG Frame Header Parser (exact bit-rate / sample-rate duration)
+- AI / LLM Layer: Groq / OpenAI client with automatic offline heuristic fallback
+- Testing: Pytest test suite (18/18 tests passing)
+
+Data Flow:
+----------
+[User File Upload / Text] 
+   --> Ingestion Parser (VTT / JSON / Plain Text)
+   --> SQLite Database (Meetings, Segments, Participants, Chapters, Action Items)
+   --> Voice Service (Edge Neural TTS + MPEG Frame Duration Calculation)
+   --> Synchronized MP3 Audio File + Segment Start/End DB Timestamps
+   --> Next.js Frontend (usePlayer hook + HTML5 Audio + Binary Search Highlighting)
+   --> AI Service (LLM / Fallback Heuristics for Summary, Chapters, Action Items, Chat)
+
+================================================================================
+4. BACKEND DEEP DIVE (FASTAPI & DATABASE)
+================================================================================
+
+Directory Structure:
+backend/
+├── app/
+│   ├── main.py                     # FastAPI entry point, CORS, static file mounts
+│   ├── database.py                 # SQLite engine (PRAGMA foreign_keys=ON) & SessionLocal
+│   ├── models/                     # SQLAlchemy 2.0 ORM Models
+│   │   ├── meeting.py              # Meeting entity with relationships
+│   │   ├── segment.py              # Transcript turns (speaker, text, start_sec, end_sec)
+│   │   ├── participant.py          # Participant directory + MeetingParticipant link table
+│   │   ├── chapter.py              # Meeting chapters (title, start_sec, end_sec)
+│   │   └── action_item.py          # Action items (text, assignee, due_date, completed)
+│   ├── schemas/                    # Pydantic v2 validation models
+│   ├── routers/                    # REST API Endpoints
+│   │   ├── meetings.py             # Ingest, List, Get, Edit, Delete, Audio Gen, Export
+│   │   ├── ai.py                   # Summarize, Chapters, Action Items, Chatbot
+│   │   ├── search.py               # Global search across all meetings & transcripts
+│   │   └── participants.py         # Participant management
+│   ├── services/
+│   │   ├── voice_service.py        # Edge Neural TTS & MPEG frame header parser
+│   │   ├── ai_service.py           # LLM prompting & rule-based heuristic generator
+│   │   └── ingestion_service.py    # VTT, JSON, and Text parser with timestamp alignment
+│   └── seed.py                     # Realistic seed data loader for 7 enterprise meetings
+└── tests/
+    └── test_api.py                 # 18 automated integration tests
+
+Relational Database Schema:
+- meetings: id, title, meeting_date, duration_sec, audio_url, summary, created_at, updated_at
+- segments: id, meeting_id (FK), speaker_name, text, start_sec, end_sec, sequence_num
+- participants: id, name, email, avatar_url, role
+- meeting_participants: meeting_id (FK), participant_id (FK) [Many-to-Many Link]
+- chapters: id, meeting_id (FK), title, summary, start_sec, end_sec
+- action_items: id, meeting_id (FK), text, assignee, due_date, completed
+
+================================================================================
+5. FRONTEND DEEP DIVE (NEXT.JS 14, TYPESCRIPT & TAILWIND CSS)
+================================================================================
+
+Directory Structure:
+frontend/
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx              # Root layout with ThemeProvider, Sidebar, TopNav
+│   │   ├── page.tsx                # Dashboard: Recent meetings, stats, quick upload
+│   │   ├── meetings/
+│   │   │   └── [id]/page.tsx       # Meeting Intelligence Workspace: Audio, Transcript, AI
+│   │   ├── search/page.tsx         # Global search results page with clickable timestamps
+│   │   └── participants/page.tsx   # Team directory & participant meeting history
+│   ├── components/
+│   │   ├── player/                 # MediaPlayer, SeekBar, PlaybackControls, VolumeControl
+│   │   ├── transcript/             # TranscriptViewer, SpeakerAvatar, InTranscriptSearch
+│   │   ├── summary/                # ExecutiveSummary, KeyTopics, ChaptersList, ActionItemsList, MeetingChat
+│   │   ├── upload/                 # IngestModal (File dropzone + text paste + progress)
+│   │   ├── meetings/               # EditMeetingModal, DeleteConfirmModal, ExportDropdown
+│   │   └── layout/                 # Sidebar, TopNav, ThemeToggle
+│   ├── hooks/
+│   │   ├── usePlayer.ts            # High-performance playback state & binary search sync
+│   │   ├── useAudioPlayer.ts       # HTML5 Audio element lifecycle management
+│   │   └── useTheme.ts             # Dark/Light mode switcher with localStorage persistence
+│   └── lib/
+│       ├── api.ts                  # Typed Fetch API client
+│       └── utils.ts                # Time formatters (formatDuration, formatTimestamp)
+
+================================================================================
+6. VOICE SYNTHESIS & SPOKEN SPEECH SYNCHRONIZATION ENGINE
+================================================================================
+
+How Audio Generation Works:
+1. Multi-Speaker Voice Allocation:
+   - Each unique speaker is mapped to a high-fidelity Microsoft Edge Neural Voice:
+     * Female 1: en-US-JennyNeural
+     * Male 1:   en-US-GuyNeural
+     * Male 2:   en-US-ChristopherNeural
+     * Female 2: en-US-AriaNeural
+     * Male 3:   en-US-EricNeural
+     * Indian:   en-IN-NeerjaNeural
+2. Concurrency-Controlled Synthesis:
+   - Uses asyncio.Semaphore(6) to prevent Bing TTS rate limits and connection resets.
+   - Each dialogue turn is synthesized to a separate MP3 audio buffer in memory.
+3. Millisecond-Exact MPEG Frame Header Duration Parsing:
+   - Instead of estimating duration by word count, voice_service.py parses raw MPEG 
+     audio frame headers (MPEG-1 Layer III, bitrates 32-320 kbps, sample rates 32-48 kHz).
+   - Calculates exact spoken audio duration: duration = (1152 / sample_rate) * frame_count.
+4. Monotonic Timestamp Alignment & Database Synchronization:
+   - Combines individual dialogue turn MP3s into a single seamless audio file.
+   - Updates each segment's start_sec and end_sec in the database to match the exact 
+     spoken timing.
+   - Re-scales and aligns chapter markers and meeting duration accordingly.
+
+================================================================================
+7. CLICK-TO-SPEAK & INTERACTIVE PLAYBACK SYSTEM
+================================================================================
+
+How Bidirectional Sync Works:
+- Binary Search Lookup (O(log N)):
+  * In usePlayer.ts, findActiveSegmentIndex() performs a binary search over the 
+    sorted segments array on every audio timeupdate event (~4-10 times/sec).
+  * Automatically highlights the active dialogue box with smooth purple glow border.
+- Click-to-Speak (0ms Latency):
+  * When a user clicks ANY transcript segment card, chapter marker, or chat timestamp:
+    1. Player executes seek(targetSeconds).
+    2. Immediately updates activeSegmentIndex and currentTime state synchronously for 
+       instant visual feedback.
+    3. Triggers audio.currentTime = targetSeconds and invokes audio.play() automatically.
+  * Audio starts speaking instantly from that turn, even if audio was previously paused.
+
+================================================================================
+8. AI PIPELINE, PROMPT ENGINEERING & USER IDENTITY CONTEXT
+================================================================================
+
+- Multi-Provider LLM Integration:
+  * Configured for Groq (Llama 3.3 70B Versatile) and OpenAI (GPT-4o-mini).
+  * Automatic fallback to offline rule-based heuristic generation if API keys 
+    are missing or rate-limited.
+- User Identity & Role Awareness in Chatbot:
+  * System prompt grounds the assistant in the context of the current user:
+    "You are an AI meeting assistant for Sarah Chen (Head of Product).
+     You know who you are speaking with. If asked 'Who am I?', state:
+     'You are Sarah Chen, Head of Product'.
+     If asked about your role or commitments, detail Sarah Chen's specific tasks."
+- Interactive Timestamps in AI Responses:
+  * Regex extracts all [MM:SS] timestamp references in AI chat responses and converts 
+    them into interactive, purple badge buttons with play icons that trigger onSeek().
+
+================================================================================
+9. INGESTION, SEARCH & EXPORT SYSTEMS
+================================================================================
+
+- Multi-Format Ingestion:
+  * .vtt: Parses WEBVTT cue headers, start/end timestamps (00:01.000), and speaker prefixes.
+  * .json: Parses structured segment arrays with speaker and text fields.
+  * .txt / Raw Text: Intelligently identifies speaker name prefixes (e.g. "Alex: Let's start") 
+    and generates natural reading-speed timestamps.
+- High-Performance Search:
+  * Global Search: Query across all meetings with highlight snippets and deep-link URLs.
+  * In-Transcript Search: Real-time client-side filter with highlight tags and counter.
+- Universal Export:
+  * Markdown (.md): Formatted meeting notes with Executive Summary, Chapters, and Transcripts.
+  * Plain Text (.txt): Clean human-readable transcript.
+  * JSON (.json): Machine-readable data for external integrations.
+
+================================================================================
+10. KEY ENGINEERING CHALLENGES SOLVED & RELIABILITY ENHANCEMENTS
+================================================================================
+
+1. Problem: Paid OpenAI TTS was costly and required paid API keys.
+   Solution: Integrated Microsoft Edge Neural TTS (edge-tts) for 100% free, natural voices.
+
+2. Problem: Parallel TTS calls for 50+ turns triggered network connection resets.
+   Solution: Added asyncio.Semaphore(6) and retry mechanisms to throttle network requests.
+
+3. Problem: Generated audio was out of sync with pre-existing transcript timestamps.
+   Solution: Implemented raw MPEG frame duration parsing and dynamically updated database 
+   start_sec/end_sec to match exact audio speech lengths.
+
+4. Problem: Clicking transcript boxes on long meetings didn't trigger audio playback.
+   Solution: Unified onSeek callback in Meeting page with auto-play (player.play()) and 
+   instantaneous local state updates.
+
+5. Problem: Dark mode dropdowns and badges had low contrast or transparent backgrounds.
+   Solution: Added brand.950 (#1e113f) color tokens, high-contrast dark mode classes, and 
+   opaque select menus.
+
+================================================================================
+11. HOW TO RUN, TEST AND VERIFY THE PLATFORM
+================================================================================
+
+Prerequisites:
+- Python 3.10+
+- Node.js 18+
+
+Starting the Backend:
+---------------------
+cd backend
+source .venv/bin/activate
+export PYTHONPATH=/Users/sonali/Desktop/Scaler_AI
+uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
+
+Starting the Frontend:
+----------------------
+cd frontend
+npm run dev -- -p 3000
+
+Running Automated Test Suite:
+-----------------------------
+PYTHONPATH=. backend/.venv/bin/pytest backend/tests/test_api.py
+(Result: 18 passed in ~1.5 seconds)
+
+Accessing the Application:
+--------------------------
+- Web App:       http://localhost:3000
+- API Docs:      http://127.0.0.1:8000/docs
+- Global Search: http://localhost:3000/search
+- Team Directory: http://localhost:3000/participants
+
+================================================================================
+                          END OF PROJECT OVERVIEW
+================================================================================

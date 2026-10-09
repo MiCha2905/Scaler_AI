@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00:01.000 --> 00:00:06.500
+<v Sarah Chen>Good morning team. Today we are reviewing the enterprise security rollout and our compliance milestones.
+
+00:00:07.000 --> 00:00:13.200
+<v Alex Rivera>Thanks Sarah. I'll complete the audit log streaming integration with Datadog and Splunk by this Thursday.
+
+00:00:14.000 --> 00:00:20.500
+<v Marcus Johnson>Our sales pipeline has two enterprise renewals that require SOC2 Type II compliance reports by end of month.
+
+00:00:21.000 --> 00:00:27.000
+<v Elena Rostova>The UI design for granular RBAC permissions is finalized in Figma. We should begin frontend scaffolding tomorrow.
+
+00:00:28.000 --> 00:00:34.000
+<v Sarah Chen>Let's make sure we test the token expiration edge cases before deploying to our staging cluster.

@@ -1,0 +1,16 @@
+WEBVTT
+
+00:00:01.000 --> 00:00:08.000
+<v Sarah Chen>Good afternoon everyone. Let's discuss our AI integration roadmap for the Fireflies intelligence platform.
+
+00:00:08.500 --> 00:00:16.000
+<v Alex Rivera>I've configured our multi-model fallback pipeline with Groq and OpenAI. Response latencies are currently sub-second.
+
+00:00:16.500 --> 00:00:24.000
+<v Marcus Johnson>That's great progress Alex. I'll prepare a live demo for our enterprise customer advisory board on Friday.
+
+00:00:24.500 --> 00:00:32.000
+<v Elena Rostova>The interactive seek bar and chapter jump links are working smoothly in both bright and dark modes.
+
+00:00:32.500 --> 00:00:39.000
+<v Sarah Chen>Let's make sure we test voice synthesis generation across all 6 speaker profiles before deployment.
