@@ -82,15 +82,15 @@ export const TranscriptLine = React.memo(function TranscriptLine({
               }}
               title={commentCount > 0 ? `${commentCount} comment${commentCount > 1 ? "s" : ""} - click to add note` : "Add note on this line"}
               className={cn(
-                "p-1 rounded-md transition-all flex items-center gap-1",
+                "p-1 rounded-md transition-all flex items-center gap-1 cursor-pointer",
                 commentCount > 0
-                  ? "opacity-100 text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/80 px-1.5 py-0.5 border border-brand-200 dark:border-brand-900"
-                  : "opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950/50"
+                  ? "opacity-100 text-brand-600 dark:text-brand-300 bg-brand-100/80 dark:bg-brand-900/80 px-1.5 py-0.5 border border-brand-300 dark:border-brand-700 font-semibold"
+                  : "opacity-0 group-hover:opacity-100 text-slate-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-300 hover:bg-brand-50 dark:hover:bg-brand-950/70"
               )}
             >
               <MessageSquarePlus className="w-3.5 h-3.5" />
               {commentCount > 0 && (
-                <span className="text-[10px] font-bold">{commentCount}</span>
+                <span className="text-[10px] font-bold text-brand-700 dark:text-brand-200">{commentCount}</span>
               )}
             </button>
           )}

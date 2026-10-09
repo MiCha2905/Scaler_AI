@@ -204,13 +204,15 @@ export function TranscriptPanel({
                 {segComments.map((c) => (
                   <div
                     key={c.id}
-                    className="ml-11 mr-2 p-2.5 rounded-xl bg-brand-50/80 dark:bg-brand-950/60 border border-brand-200/80 dark:border-brand-900/80 text-xs flex items-start justify-between gap-2.5 text-brand-950 dark:text-brand-100 shadow-2xs group/comment animate-in fade-in duration-150"
+                    className="ml-11 mr-2 p-3 rounded-xl bg-brand-50/90 dark:bg-[#1f1a45] border border-brand-200/80 dark:border-brand-700/60 text-xs flex items-start justify-between gap-2.5 text-slate-900 dark:text-white shadow-xs group/comment animate-in fade-in duration-150"
                   >
-                    <div className="flex items-start gap-2 flex-1 min-w-0">
-                      <MessageSquare className="w-3.5 h-3.5 mt-0.5 text-brand-600 dark:text-brand-400 shrink-0" />
-                      <div className="space-y-0.5 flex-1 min-w-0">
-                        <p className="leading-relaxed break-words font-medium">{c.body}</p>
-                        <span className="text-[10px] text-muted-foreground block">
+                    <div className="flex items-start gap-2.5 flex-1 min-w-0">
+                      <MessageSquare className="w-4 h-4 mt-0.5 text-brand-600 dark:text-brand-400 shrink-0" />
+                      <div className="space-y-1 flex-1 min-w-0">
+                        <p className="leading-relaxed break-words font-medium text-slate-900 dark:text-slate-100 text-xs selection:bg-brand-500/30">
+                          {c.body}
+                        </p>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 block font-mono">
                           {new Date(c.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                         </span>
                       </div>
@@ -228,18 +230,18 @@ export function TranscriptPanel({
                         }
                       }}
                       title="Delete comment"
-                      className="opacity-0 group-hover/comment:opacity-100 p-1 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-md transition-all"
+                      className="opacity-0 group-hover/comment:opacity-100 p-1 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/60 rounded-md transition-all cursor-pointer"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 ))}
 
                 {/* Inline Comment Form right beneath this segment */}
                 {isEditingComment && (
-                  <div className="ml-11 mr-2 p-3 rounded-2xl bg-card border-2 border-brand-500/60 shadow-md space-y-2.5 animate-in fade-in zoom-in-98 duration-150">
+                  <div className="ml-11 mr-2 p-3.5 rounded-2xl bg-white dark:bg-[#1a163b] border-2 border-brand-500 shadow-xl space-y-3 animate-in fade-in zoom-in-98 duration-150">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-brand-600 dark:text-brand-400 flex items-center gap-1.5 uppercase tracking-wider">
+                      <span className="text-[11px] font-bold text-brand-600 dark:text-brand-300 flex items-center gap-1.5 uppercase tracking-wider">
                         <MessageSquare className="w-3.5 h-3.5" />
                         <span>Add Note / Comment</span>
                       </span>
@@ -248,13 +250,13 @@ export function TranscriptPanel({
                           setCommentTargetSegment(null);
                           setCommentText("");
                         }}
-                        className="p-1 text-muted-foreground hover:text-foreground rounded-md transition-colors"
+                        className="p-1 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-md transition-colors cursor-pointer"
                       >
                         <X className="w-3.5 h-3.5" />
                       </button>
                     </div>
 
-                    <form onSubmit={handleAddCommentSubmit} className="space-y-2">
+                    <form onSubmit={handleAddCommentSubmit} className="space-y-2.5">
                       <textarea
                         autoFocus
                         rows={2}
@@ -270,28 +272,28 @@ export function TranscriptPanel({
                             setCommentText("");
                           }
                         }}
-                        className="w-full px-3 py-2 text-xs rounded-xl border border-input bg-background/80 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 resize-none transition-all placeholder:text-muted-foreground/70"
+                        className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-[#100d28] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 resize-none transition-all"
                       />
 
                       <div className="flex items-center justify-between pt-0.5">
-                        <span className="text-[10px] text-muted-foreground">
-                          Press <kbd className="font-mono bg-muted px-1 py-0.5 rounded text-[9px] border">Enter ↵</kbd> to save
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                          Press <kbd className="font-mono bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1 py-0.5 rounded text-[9px] border border-slate-300 dark:border-slate-700">Enter ↵</kbd> to save
                         </span>
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-2">
                           <button
                             type="button"
                             onClick={() => {
                               setCommentTargetSegment(null);
                               setCommentText("");
                             }}
-                            className="px-2.5 py-1 text-xs rounded-lg text-muted-foreground hover:bg-muted font-medium transition-colors"
+                            className="px-2.5 py-1 text-xs rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-colors cursor-pointer"
                           >
                             Cancel
                           </button>
                           <button
                             type="submit"
                             disabled={!commentText.trim()}
-                            className="px-3 py-1 rounded-lg bg-brand-600 text-white text-xs font-semibold hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-1 shadow-xs"
+                            className="px-3.5 py-1 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-1 shadow-sm cursor-pointer"
                           >
                             <Send className="w-3 h-3" />
                             <span>Post</span>
