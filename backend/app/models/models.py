@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from sqlalchemy import (
     Table, Column, Integer, String, Float, DateTime, Date, Boolean,
     ForeignKey, Text, CheckConstraint, Index
@@ -78,13 +79,6 @@ class Meeting(Base):
         "Tag",
         secondary=meeting_tags,
         back_populates="meetings",
-        lazy="selectin"
-    )
-    comments = relationship(
-        "Comment",
-        back_populates="meeting",
-        cascade="all, delete-orphan",
-        passive_deletes=True,
         lazy="selectin"
     )
 
@@ -199,15 +193,17 @@ class Comment(Base):
     __tablename__ = "comments"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    meeting_id = Column(Integer, ForeignKey("meetings.id", ondelete="CASCADE"), nullable=False)
     segment_id = Column(Integer, ForeignKey("transcript_segments.id", ondelete="CASCADE"), nullable=False)
     body = Column(Text, nullable=False)
     kind = Column(String(50), nullable=False, default="comment")  # 'comment' | 'highlight' | 'soundbite'
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
-    meeting = relationship("Meeting", back_populates="comments")
     segment = relationship("TranscriptSegment", back_populates="comments")
 
+    @property
+    def meeting_id(self) -> Optional[int]:
+        return self.segment.meeting_id if self.segment else None
+
     __table_args__ = (
-        Index("idx_comments_meeting", "meeting_id"),
+        Index("idx_comments_segment", "segment_id"),
     )

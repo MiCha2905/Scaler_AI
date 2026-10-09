@@ -140,13 +140,29 @@ backend/
 └── tests/
     └── test_api.py                 # 18 automated integration tests
 
-Relational Database Schema:
-- meetings: id, title, meeting_date, duration_sec, audio_url, summary, created_at, updated_at
-- segments: id, meeting_id (FK), speaker_name, text, start_sec, end_sec, sequence_num
-- participants: id, name, email, avatar_url, role
-- meeting_participants: meeting_id (FK), participant_id (FK) [Many-to-Many Link]
-- chapters: id, meeting_id (FK), title, summary, start_sec, end_sec
-- action_items: id, meeting_id (FK), text, assignee, due_date, completed
+Relational Database Schema & Cardinality (3NF Normalized):
+-----------------------------------------------------------
+meetings            1     --- *     transcript_segments   (CASCADE on delete)
+meetings            1     --- *     chapters              (CASCADE on delete)
+meetings            1     --- 0..1  summaries             (CASCADE on delete, unique FK)
+meetings            1     --- *     action_items          (CASCADE on delete)
+meetings            *     --- *     participants          (via meeting_participants join table)
+meetings            *     --- *     tags                  (via meeting_tags join table)
+participants        0..1  --- *     transcript_segments   (speaker_id FK, SET NULL on delete)
+participants        0..1  --- *     action_items          (assignee_id FK, SET NULL on delete)
+transcript_segments 1     --- *     comments              (segment_id FK, CASCADE on delete) [Bonus]
+
+Table Definitions:
+- meetings: id (PK), title, date, duration_sec, audio_url, source, created_at, updated_at
+- transcript_segments: id (PK), meeting_id (FK), speaker_id (FK, nullable), speaker_label, start_sec, end_sec, text, position
+- participants: id (PK), name, email
+- meeting_participants: meeting_id (FK, PK), participant_id (FK, PK) [Composite PK]
+- summaries: id (PK), meeting_id (FK, unique), overview, keywords_json, generated_at
+- chapters: id (PK), meeting_id (FK), title, description, start_sec, position
+- action_items: id (PK), meeting_id (FK), assignee_id (FK, nullable), text, due_date, is_completed, created_at
+- tags: id (PK), name (unique)
+- meeting_tags: meeting_id (FK, PK), tag_id (FK, PK) [Composite PK]
+- comments: id (PK), segment_id (FK), body, kind, created_at
 
 ================================================================================
 5. FRONTEND DEEP DIVE (NEXT.JS 14, TYPESCRIPT & TAILWIND CSS)

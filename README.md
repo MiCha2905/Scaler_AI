@@ -40,7 +40,22 @@ FastAPI (Python 3.11)
 | **Frontend** | Next.js 14 (App Router), TypeScript, Tailwind CSS | Client-side reactive audio syncing, typed API client, and fast responsive UI |
 | **Backend** | FastAPI, Pydantic v2, SQLAlchemy 2.0 | High-performance async Python, automated OpenAPI `/docs`, strong validation |
 | **Database** | SQLite with Foreign Keys Enforced | Required by brief. `PRAGMA foreign_keys=ON` listener enforced on every connection |
+| **TTS Engine** | Microsoft Edge Neural Voice | Zero-cost multi-speaker neural voice generation with frame-exact synchronization |
 | **Playback** | Custom `PlaybackEngine` interface | Pluggable `SimulatedEngine` and `AudioEngine` sharing unified sync hooks |
+
+### 🗄 Relational Database Schema (3NF Normalized)
+
+```
+meetings            1     ─── *     transcript_segments   (CASCADE on delete)
+meetings            1     ─── *     chapters              (CASCADE on delete)
+meetings            1     ─── 0..1  summaries             (CASCADE on delete, unique FK)
+meetings            1     ─── *     action_items          (CASCADE on delete)
+meetings            *     ─── *     participants          (via meeting_participants join table)
+meetings            *     ─── *     tags                  (via meeting_tags join table)
+participants        0..1  ─── *     transcript_segments   (speaker_id FK, SET NULL on delete)
+participants        0..1  ─── *     action_items          (assignee_id FK, SET NULL on delete)
+transcript_segments 1     ─── *     comments              (segment_id FK, CASCADE on delete) [Bonus]
+```
 
 ---
 

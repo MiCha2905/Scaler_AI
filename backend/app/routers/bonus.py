@@ -125,7 +125,13 @@ def global_search(
 
 @router.get("/meetings/{meeting_id}/comments", response_model=List[CommentResponse])
 def list_comments(meeting_id: int, db: Session = Depends(get_db)):
-    comments = db.query(Comment).filter(Comment.meeting_id == meeting_id).order_by(Comment.created_at.asc()).all()
+    comments = (
+        db.query(Comment)
+        .join(TranscriptSegment, Comment.segment_id == TranscriptSegment.id)
+        .filter(TranscriptSegment.meeting_id == meeting_id)
+        .order_by(Comment.created_at.asc())
+        .all()
+    )
     return [CommentResponse.model_validate(c) for c in comments]
 
 
@@ -143,7 +149,6 @@ def create_comment(meeting_id: int, comment_in: CommentCreate, db: Session = Dep
         raise HTTPException(status_code=404, detail={"error": {"code": "not_found", "message": "Transcript segment not found", "details": []}})
 
     c = Comment(
-        meeting_id=meeting_id,
         segment_id=comment_in.segment_id,
         body=comment_in.body.strip(),
         kind=comment_in.kind or "comment"
