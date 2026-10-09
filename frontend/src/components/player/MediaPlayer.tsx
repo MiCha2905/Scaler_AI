@@ -106,10 +106,21 @@ export function MediaPlayer({
               <RotateCw className="w-4 h-4" />
             </button>
 
-            {/* Time Stamp */}
-            <div className="ml-3 font-mono text-xs font-semibold text-foreground">
-              <span>{formatTime(currentTime)}</span>
-              <span className="text-muted-foreground font-normal"> / {formatTime(duration)}</span>
+            {/* Time Stamp & Progress Stats */}
+            <div className="ml-3 flex items-center gap-2">
+              <div className="font-mono text-xs font-semibold text-foreground flex items-center gap-1">
+                <span>{formatTime(currentTime)}</span>
+                <span className="text-muted-foreground font-normal">/ {formatTime(duration)}</span>
+              </div>
+              {duration > 0 && (
+                <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-md">
+                  <span>-{formatTime(Math.max(0, duration - currentTime))}</span>
+                  <span className="text-border">|</span>
+                  <span className="text-brand-600 dark:text-brand-400 font-semibold">
+                    {Math.min(100, Math.round((currentTime / duration) * 100))}%
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 

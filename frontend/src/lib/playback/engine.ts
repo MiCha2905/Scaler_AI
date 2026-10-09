@@ -138,9 +138,17 @@ export class AudioEngine implements PlaybackEngine {
     }
 
     this.audio.addEventListener("loadedmetadata", () => {
+      if (this.audio.duration && !isNaN(this.audio.duration) && isFinite(this.audio.duration)) {
+        this.durationSec = this.audio.duration;
+      }
       if (process.env.NODE_ENV !== "production") {
         console.log(`[AudioEngine] Audio loaded: ${fullUrl}, duration: ${this.audio.duration}s`);
       }
+      this.notify();
+    });
+
+    this.audio.addEventListener("timeupdate", () => {
+      this.notify();
     });
 
     this.audio.addEventListener("play", () => {
@@ -171,7 +179,10 @@ export class AudioEngine implements PlaybackEngine {
   }
 
   seek(sec: number): void {
-    this.audio.currentTime = Math.max(0, Math.min(this.durationSec, sec));
+    const maxDuration = (this.audio.duration && !isNaN(this.audio.duration) && isFinite(this.audio.duration))
+      ? this.audio.duration
+      : this.durationSec;
+    this.audio.currentTime = Math.max(0, Math.min(maxDuration, sec));
     this.notify();
   }
 
