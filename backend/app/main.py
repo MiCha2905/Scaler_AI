@@ -107,13 +107,14 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 
-# Include Routers under /api
-app.include_router(meetings.router, prefix="/api")
-app.include_router(action_items.router, prefix="/api")
-app.include_router(participants.router, prefix="/api")
-app.include_router(tags.router, prefix="/api")
-app.include_router(health.router, prefix="/api")
-app.include_router(bonus.router, prefix="/api")
+# Include Routers under /api and root for compatibility
+for pfx in ["/api", ""]:
+    app.include_router(meetings.router, prefix=pfx)
+    app.include_router(action_items.router, prefix=pfx)
+    app.include_router(participants.router, prefix=pfx)
+    app.include_router(tags.router, prefix=pfx)
+    app.include_router(health.router, prefix=pfx)
+    app.include_router(bonus.router, prefix=pfx)
 
 
 @app.get("/")
