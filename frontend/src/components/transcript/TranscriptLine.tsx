@@ -12,6 +12,7 @@ interface TranscriptLineProps {
   isActive: boolean;
   searchQuery: string;
   activeMatchGlobalIndex?: number;
+  commentCount?: number;
   onSeek: (startSec: number) => void;
   onAddComment?: (segment: TranscriptSegment) => void;
 }
@@ -22,6 +23,7 @@ export const TranscriptLine = React.memo(function TranscriptLine({
   isActive,
   searchQuery,
   activeMatchGlobalIndex,
+  commentCount = 0,
   onSeek,
   onAddComment,
 }: TranscriptLineProps) {
@@ -71,17 +73,25 @@ export const TranscriptLine = React.memo(function TranscriptLine({
             </span>
           </div>
 
-          {/* Quick Comment Trigger */}
+          {/* Comment Trigger / Badge */}
           {onAddComment && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onAddComment(segment);
               }}
-              title="Add comment on this line"
-              className="opacity-0 group-hover:opacity-100 p-1 text-muted-foreground hover:text-brand-600 rounded-md transition-all"
+              title={commentCount > 0 ? `${commentCount} comment${commentCount > 1 ? "s" : ""} - click to add note` : "Add note on this line"}
+              className={cn(
+                "p-1 rounded-md transition-all flex items-center gap-1",
+                commentCount > 0
+                  ? "opacity-100 text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/80 px-1.5 py-0.5 border border-brand-200 dark:border-brand-900"
+                  : "opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-brand-600 hover:bg-brand-50 dark:hover:bg-brand-950/50"
+              )}
             >
               <MessageSquarePlus className="w-3.5 h-3.5" />
+              {commentCount > 0 && (
+                <span className="text-[10px] font-bold">{commentCount}</span>
+              )}
             </button>
           )}
         </div>

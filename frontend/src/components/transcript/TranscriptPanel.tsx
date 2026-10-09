@@ -160,7 +160,7 @@ export function TranscriptPanel({
       <div
         ref={containerRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto p-3 space-y-1.5 scroll-smooth"
+        className="flex-1 overflow-y-auto p-3 space-y-2 scroll-smooth"
       >
         {segments.length === 0 ? (
           <div className="py-16 text-center space-y-2">
@@ -173,34 +173,137 @@ export function TranscriptPanel({
             </p>
           </div>
         ) : (
-          segments.map((seg, idx) => (
-            <div key={seg.id} className="space-y-1">
-              <TranscriptLine
-                segment={seg}
-                index={idx}
-                isActive={activeSegmentIndex === idx}
-                searchQuery={searchQuery}
-                onSeek={(sec) => {
-                  setUserHasScrolled(false);
-                  onSeek(sec);
-                }}
-                onAddComment={(s) => setCommentTargetSegment(s)}
-              />
+          segments.map((seg, idx) => {
+            const segComments = comments.filter((c) => c.segment_id === seg.id);
+            const isEditingComment = commentTargetSegment?.id === seg.id;
 
-              {/* Display comments on this segment if any */}
-              {comments
-                .filter((c) => c.segment_id === seg.id)
-                .map((c) => (
+            return (
+              <div key={seg.id} className="space-y-1.5">
+                <TranscriptLine
+                  segment={seg}
+                  index={idx}
+                  isActive={activeSegmentIndex === idx}
+                  searchQuery={searchQuery}
+                  commentCount={segComments.length}
+                  onSeek={(sec) => {
+                    setUserHasScrolled(false);
+                    onSeek(sec);
+                  }}
+                  onAddComment={(s) => {
+                    if (commentTargetSegment?.id === s.id) {
+                      setCommentTargetSegment(null);
+                      setCommentText("");
+                    } else {
+                      setCommentTargetSegment(s);
+                      setCommentText("");
+                    }
+                  }}
+                />
+
+                {/* Display existing comments for this segment right here */}
+                {segComments.map((c) => (
                   <div
                     key={c.id}
-                    className="ml-12 p-2 rounded-xl bg-brand-50/60 dark:bg-brand-950/40 border border-brand-200/60 dark:border-brand-900/60 text-xs flex items-start gap-2 text-brand-900 dark:text-brand-200"
+                    className="ml-11 mr-2 p-2.5 rounded-xl bg-brand-50/80 dark:bg-brand-950/60 border border-brand-200/80 dark:border-brand-900/80 text-xs flex items-start justify-between gap-2.5 text-brand-950 dark:text-brand-100 shadow-2xs group/comment animate-in fade-in duration-150"
                   >
-                    <MessageSquare className="w-3.5 h-3.5 mt-0.5 text-brand-500 shrink-0" />
-                    <span className="flex-1 leading-relaxed">{c.body}</span>
+                    <div className="flex items-start gap-2 flex-1 min-w-0">
+                      <MessageSquare className="w-3.5 h-3.5 mt-0.5 text-brand-600 dark:text-brand-400 shrink-0" />
+                      <div className="space-y-0.5 flex-1 min-w-0">
+                        <p className="leading-relaxed break-words font-medium">{c.body}</p>
+                        <span className="text-[10px] text-muted-foreground block">
+                          {new Date(c.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        try {
+                          await api.deleteComment(c.id);
+                          setComments((prev) => prev.filter((item) => item.id !== c.id));
+                          showToast("Comment deleted", "info");
+                        } catch (err: any) {
+                          showToast("Failed to delete comment", "error");
+                        }
+                      }}
+                      title="Delete comment"
+                      className="opacity-0 group-hover/comment:opacity-100 p-1 text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-md transition-all"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
                   </div>
                 ))}
-            </div>
-          ))
+
+                {/* Inline Comment Form right beneath this segment */}
+                {isEditingComment && (
+                  <div className="ml-11 mr-2 p-3 rounded-2xl bg-card border-2 border-brand-500/60 shadow-md space-y-2.5 animate-in fade-in zoom-in-98 duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-brand-600 dark:text-brand-400 flex items-center gap-1.5 uppercase tracking-wider">
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span>Add Note / Comment</span>
+                      </span>
+                      <button
+                        onClick={() => {
+                          setCommentTargetSegment(null);
+                          setCommentText("");
+                        }}
+                        className="p-1 text-muted-foreground hover:text-foreground rounded-md transition-colors"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleAddCommentSubmit} className="space-y-2">
+                      <textarea
+                        autoFocus
+                        rows={2}
+                        placeholder="Type note, key takeaway, or follow-up question..."
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            handleAddCommentSubmit(e);
+                          } else if (e.key === "Escape") {
+                            setCommentTargetSegment(null);
+                            setCommentText("");
+                          }
+                        }}
+                        className="w-full px-3 py-2 text-xs rounded-xl border border-input bg-background/80 focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500 resize-none transition-all placeholder:text-muted-foreground/70"
+                      />
+
+                      <div className="flex items-center justify-between pt-0.5">
+                        <span className="text-[10px] text-muted-foreground">
+                          Press <kbd className="font-mono bg-muted px-1 py-0.5 rounded text-[9px] border">Enter ↵</kbd> to save
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCommentTargetSegment(null);
+                              setCommentText("");
+                            }}
+                            className="px-2.5 py-1 text-xs rounded-lg text-muted-foreground hover:bg-muted font-medium transition-colors"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            disabled={!commentText.trim()}
+                            className="px-3 py-1 rounded-lg bg-brand-600 text-white text-xs font-semibold hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-1 shadow-xs"
+                          >
+                            <Send className="w-3 h-3" />
+                            <span>Post</span>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </div>
+            );
+          })
         )}
       </div>
 
@@ -213,41 +316,6 @@ export function TranscriptPanel({
           <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
           <span>Jump to active line</span>
         </button>
-      )}
-
-      {/* Add Comment Popover Modal */}
-      {commentTargetSegment && (
-        <div className="p-3 border-t border-border bg-card shadow-lg flex flex-col gap-2 animate-in slide-in-from-bottom-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-              <MessageSquare className="w-3.5 h-3.5 text-brand-500" />
-              <span>Comment on line at {commentTargetSegment.start_sec}s</span>
-            </span>
-            <button
-              onClick={() => setCommentTargetSegment(null)}
-              className="p-1 text-muted-foreground hover:text-foreground"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          </div>
-          <form onSubmit={handleAddCommentSubmit} className="flex gap-2">
-            <input
-              type="text"
-              autoFocus
-              placeholder="Type note or highlight takeaway..."
-              value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
-              className="flex-1 px-3 py-1.5 text-xs rounded-xl border border-input bg-background focus:outline-none focus:ring-2 focus:ring-brand-500/40"
-            />
-            <button
-              type="submit"
-              className="px-3 py-1.5 rounded-xl bg-brand-500 text-white text-xs font-semibold hover:bg-brand-600 transition-colors flex items-center gap-1"
-            >
-              <Send className="w-3 h-3" />
-              <span>Save</span>
-            </button>
-          </form>
-        </div>
       )}
     </div>
   );
