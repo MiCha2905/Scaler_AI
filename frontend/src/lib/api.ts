@@ -12,10 +12,23 @@ import {
   ChatAnswer,
 } from "@/types/api";
 
-const rawBase =
-  process.env.NEXT_PUBLIC_API_URL ||
-  (typeof window !== "undefined" ? "/api" : "http://127.0.0.1:8000/api");
-const API_BASE = rawBase.replace(/\/+$/, "");
+function getApiBase(): string {
+  let base = process.env.NEXT_PUBLIC_API_URL?.trim();
+  if (!base) {
+    if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+      base = "https://scaler-ai-backend-q590.onrender.com/api";
+    } else {
+      base = "http://127.0.0.1:8000/api";
+    }
+  }
+  base = base.replace(/\/+$/, "");
+  if (!base.endsWith("/api") && !base.includes("/api")) {
+    base = `${base}/api`;
+  }
+  return base;
+}
+
+const API_BASE = getApiBase();
 
 export class ApiError extends Error {
   code: string;

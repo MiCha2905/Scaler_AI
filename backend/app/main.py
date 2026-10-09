@@ -57,19 +57,20 @@ origins = [
     "http://127.0.0.1:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3001",
+    "https://scaler-ai-zeta.vercel.app",
 ]
 
 env_cors = os.getenv("CORS_ORIGINS")
 if env_cors:
     for origin in env_cors.split(","):
-        clean = origin.strip()
+        clean = origin.strip().rstrip("/")
         if clean and clean not in origins:
             origins.append(clean)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$|^https://[a-zA-Z0-9_-]+\.vercel\.app$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

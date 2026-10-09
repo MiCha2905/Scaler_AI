@@ -111,8 +111,15 @@ function resolveAudioUrl(url: string): string {
   if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("blob:")) {
     return url;
   }
-  const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
-  const backendRoot = apiBase.replace(/\/api\/?$/, "");
+  let apiBase = process.env.NEXT_PUBLIC_API_URL?.trim();
+  if (!apiBase) {
+    if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+      apiBase = "https://scaler-ai-backend-q590.onrender.com/api";
+    } else {
+      apiBase = "http://127.0.0.1:8000/api";
+    }
+  }
+  const backendRoot = apiBase.replace(/\/api\/?$/, "").replace(/\/+$/, "");
   return `${backendRoot}${url.startsWith("/") ? "" : "/"}${url}`;
 }
 
