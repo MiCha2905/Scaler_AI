@@ -128,6 +128,17 @@ export class AudioEngine implements PlaybackEngine {
     this.audio = new Audio(fullUrl);
     this.durationSec = durationSec;
 
+    if (typeof window !== "undefined" && typeof document !== "undefined") {
+      this.audio.id = "active-meeting-audio";
+      this.audio.style.display = "none";
+      document.body.appendChild(this.audio);
+      (window as any).__AUDIO_ELEMENT__ = this.audio;
+    }
+
+    this.audio.addEventListener("loadedmetadata", () => {
+      console.log(`[AudioEngine] Audio loaded: ${fullUrl}, duration: ${this.audio.duration}s`);
+    });
+
     this.audio.addEventListener("play", () => {
       this.playing = true;
       this.notify();
@@ -180,6 +191,9 @@ export class AudioEngine implements PlaybackEngine {
     this.pause();
     this.stopPolling();
     this.listeners.clear();
+    if (this.audio.parentNode) {
+      this.audio.parentNode.removeChild(this.audio);
+    }
     this.audio.src = "";
   }
 

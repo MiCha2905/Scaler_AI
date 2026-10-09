@@ -199,6 +199,7 @@ Base path: `/api`
 - **Start Command**: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
 - **Environment Variables**:
   ```ini
+  PYTHON_VERSION=3.11
   DATABASE_URL=sqlite:///./fireflies.db
   CORS_ORIGINS=https://your-frontend.vercel.app,http://localhost:3000
   GROQ_API_KEY=your_groq_api_key_optional
