@@ -110,6 +110,8 @@ def test_filter_meetings_by_participant(client):
         assert p_id in pids
 
 
+import math
+
 # ----------------------------------------------------
 # 3. Meeting Detail & Seed Assertions
 # ----------------------------------------------------
@@ -122,7 +124,31 @@ def test_get_meeting_detail(client):
     assert data["summary"] is not None
     assert len(data["chapters"]) >= 3
     assert len(data["action_items"]) >= 2
-    assert data["duration_sec"] > 1000
+    
+    # Assert duration matches the ceiling of the last segment's end_sec
+    t_res = client.get("/api/meetings/1/transcript")
+    segments = t_res.json()
+    assert len(segments) > 0
+    expected_duration = math.ceil(max(s["end_sec"] for s in segments))
+    assert data["duration_sec"] == expected_duration
+
+
+def test_all_seeded_meetings_duration_invariant(client):
+    # Verify the invariant duration_sec == ceil(max(end_sec)) for all 6 seeded meetings
+    m_res = client.get("/api/meetings")
+    assert m_res.status_code == 200
+    meetings = m_res.json()["items"]
+    assert len(meetings) == 6
+
+    for m in meetings:
+        t_res = client.get(f"/api/meetings/{m['id']}/transcript")
+        assert t_res.status_code == 200
+        segments = t_res.json()
+        assert len(segments) > 0
+        expected_duration = math.ceil(max(s["end_sec"] for s in segments))
+        assert m["duration_sec"] == expected_duration, (
+            f"Meeting {m['id']} duration_sec {m['duration_sec']} != ceil(max(end_sec)) {expected_duration}"
+        )
 
 
 def test_get_meeting_transcript(client):
@@ -436,5 +462,56 @@ def test_sqlite_pragma_foreign_keys_and_raw_sql_cascade():
 
         remaining_comments = conn.execute(text("SELECT COUNT(*) FROM comments WHERE segment_id = 1")).scalar()
         assert remaining_comments == 0, "All comments for segment 1 must be cascade-deleted by SQLite engine without ORM involvement"
+
+
+def test_seed_json_integrity():
+    import json
+    import math
+    from pathlib import Path
+    seed_path = Path(__file__).resolve().parent.parent / "app" / "seed" / "seeded_meetings.json"
+    assert seed_path.exists(), "seeded_meetings.json must exist"
+
+    with open(seed_path, "r", encoding="utf-8") as f:
+        meetings_data = json.load(f)
+
+    assert len(meetings_data) == 6
+    static_dir = Path(__file__).resolve().parent.parent / "app" / "static"
+
+    for m in meetings_data:
+        segs = m["segments"]
+        assert len(segs) > 0
+
+        # 1. Segments are ordered and don't overlap
+        for i in range(len(segs)):
+            assert segs[i]["position"] == i
+            assert segs[i]["end_sec"] >= segs[i]["start_sec"]
+            if i > 0:
+                assert segs[i]["start_sec"] >= segs[i-1]["end_sec"], (
+                    f"Meeting {m['id']} segment {i} overlaps with segment {i-1}"
+                )
+
+        # 2. Duration equals ceil(max(end_sec))
+        last_end = max(s["end_sec"] for s in segs)
+        assert m["duration_sec"] == math.ceil(last_end), (
+            f"Meeting {m['id']} duration_sec {m['duration_sec']} != ceil(max(end_sec)) {math.ceil(last_end)}"
+        )
+
+        # 3. Chapters start_sec equals an existing segment start_sec
+        valid_starts = {s["start_sec"] for s in segs}
+        for ch in m.get("chapters", []):
+            assert ch["start_sec"] in valid_starts, (
+                f"Chapter '{ch['title']}' start_sec {ch['start_sec']} not in segment start times"
+            )
+
+        # 4. Audio URL points to a file that exists on disk
+        audio_url = m.get("audio_url", f"/static/audio/meeting_{m['id']}.mp3")
+        # Extract relative path from static URL (e.g. /static/audio/meeting_1.mp3 -> static/audio/meeting_1.mp3)
+        rel_audio_path = audio_url.lstrip("/")
+        if rel_audio_path.startswith("static/"):
+            rel_audio_path = rel_audio_path[len("static/"):]
+        audio_file = static_dir / rel_audio_path
+        assert audio_file.exists(), f"Audio file {audio_file} referenced by audio_url '{audio_url}' must exist on disk"
+
+
 
 

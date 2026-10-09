@@ -9,7 +9,7 @@ Built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, **Fast
 ## ✨ Key Features
 
 - 🎧 **Synchronized Playback Engine**: Pluggable playback engine featuring both real HTML5 audio support and an elapsed-time **Simulated Clock Engine** powered by `performance.now()`. Immune to background-tab timer throttling.
-- 🗣 **Microsoft Edge Neural Voice Synthesis**: 100% free, multi-speaker neural voice generation (zero API keys needed). Automatically assigns unique neural voice personas to each meeting participant with frame-perfect millisecond alignment.
+- 🗣 **Microsoft Edge Neural Voice Synthesis**: 100% free, multi-speaker neural voice generation (zero API keys needed). Automatically assigns unique neural voice personas to each meeting participant with frame-exact speech alignment.
 - ⚡ **Bidirectional Sync & Click-to-Speak**: Active transcript segments are tracked in $O(\log N)$ via binary search. Clicking ANY transcript box, chapter pill, or chat timestamp instantly seeks playback and starts speaking from that exact dialogue turn.
 - 🤖 **AI Executive Summaries & Chapters**: Auto-generates structured executive summaries, key discussion topics, clickable chapter markers, and action items with speaker attribution.
 - 💬 **Interactive Meeting Q&A ("Ask AI")**: Context-aware meeting chatbot that answers questions, identifies roles, extracts commitments, and provides clickable timestamp badges linked to audio playback.
@@ -177,9 +177,25 @@ Base path: `/api`
 
 ## 🚀 Deployment Guide (Render / Railway & Vercel)
 
+### 🗂 Seeded Meetings Roster (Pre-Synthesized & Aligned)
+
+| ID | Meeting Title | Duration | Segments | Audio Status |
+|---|---|---|---|---|
+| **1** | Q4 Product Roadmap Planning | **11m 20s** (680s) | 76 turns | 🎙 Pre-synthesized Neural MP3 |
+| **2** | Engineering Sprint Retrospective | **6m 44s** (404s) | 51 turns | 🎙 Pre-synthesized Neural MP3 |
+| **3** | Client Onboarding — Acme Corp | **5m 37s** (337s) | 44 turns | 🎙 Pre-synthesized Neural MP3 |
+| **4** | Weekly Marketing Sync | **4m 08s** (248s) | 35 turns | 🎙 Pre-synthesized Neural MP3 |
+| **5** | Design Review: Dashboard Redesign | **7m 18s** (438s) | 60 turns | 🎙 Pre-synthesized Neural MP3 |
+| **6** | Investor Update Call | **8m 52s** (532s) | 68 turns | 🎙 Pre-synthesized Neural MP3 |
+
+---
+
+## 🚀 Deployment Guide (Render / Railway & Vercel)
+
 ### 1. Backend Deployment (Render / Railway)
 - **Runtime**: Python 3.11+
-- **Build Command**: `pip install -r backend/requirements.txt` (or `pip install fastapi uvicorn[standard] sqlalchemy pydantic edge-tts python-multipart httpx python-dotenv`)
+- **Root Directory**: `.` (Repository root)
+- **Build Command**: `pip install -r backend/requirements.txt`
 - **Start Command**: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
 - **Environment Variables**:
   ```ini
@@ -194,6 +210,8 @@ Base path: `/api`
 ### 2. Frontend Deployment (Vercel)
 - **Framework Preset**: Next.js
 - **Root Directory**: `frontend`
+- **Build Command**: `npm run build`
+- **Output Directory**: `.next`
 - **Environment Variables**:
   ```ini
   NEXT_PUBLIC_API_URL=https://your-backend.onrender.com/api
@@ -204,10 +222,12 @@ Base path: `/api`
 
 ## ⚠️ Persistence & Known Limitations
 
-1. **Ephemeral Disks on Free Tier Hosts**:
-   On free-tier serverless hosting (e.g. standard Render free tier), the local filesystem resets when the container spins down. Because SQLite stores data in `fireflies.db`, any newly created meetings or audio files will reset back to the initial seeded state upon container restarts unless a **Render Persistent Disk Volume** is mounted at `/data/fireflies.db`.
-2. **Audio File Retention**:
-   Generated MP3 audio files are saved to `backend/app/static/audio/`. In serverless/stateless container environments, configure object storage (e.g. AWS S3 or Cloudflare R2) if audio files need to persist across container rebuilds.
+1. **Free-Tier Cold Starts (30-60 seconds)**:
+   Free-tier containers on Render spin down when idle. The first request after a period of inactivity may take 30 to 60 seconds to wake up. The frontend automatically shows skeleton loaders during this initial boot.
+2. **Ephemeral Disks on Free Tier Hosts**:
+   On free-tier serverless hosting (e.g. standard Render free tier), the local container filesystem resets when the instance sleeps. The 6 core seed meetings and their audio tracks (`meeting_1.mp3` through `meeting_6.mp3`) are tracked in Git and will always exist on boot. Any user-created meetings or new audio files generated at runtime will reset upon container restart unless a **Render Persistent Disk Volume** is mounted at `sqlite:////data/fireflies.db` (available on paid plans).
+3. **Audio File Retention**:
+   Generated MP3 audio files are saved to `backend/app/static/audio/`. In serverless/stateless container environments, configure object storage (e.g. AWS S3 or Cloudflare R2) if audio files created dynamically at runtime need to persist across container rebuilds.
 
 ---
 

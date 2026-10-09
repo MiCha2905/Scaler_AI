@@ -1,0 +1,2833 @@
+[
+  {
+    "id": 1,
+    "title": "Q4 Product Roadmap Planning",
+    "date": "2026-10-06T13:10:46.483967",
+    "duration_sec": 680,
+    "audio_url": "/static/audio/meeting_1.mp3",
+    "source": "seed",
+    "tags": [
+      "Product",
+      "Engineering"
+    ],
+    "participants": [
+      {
+        "name": "Sarah Chen",
+        "email": "sarah.chen@example.com"
+      },
+      {
+        "name": "Alex Rivera",
+        "email": "alex.rivera@example.com"
+      },
+      {
+        "name": "Marcus Johnson",
+        "email": "marcus.j@example.com"
+      },
+      {
+        "name": "Elena Rostova",
+        "email": "elena.r@example.com"
+      }
+    ],
+    "summary_overview": "Comprehensive alignment on Q4 product roadmap spanning enterprise workspace governance, automated workflow integrations with Jira and Slack, and mobile companion app v1 release. Technical architecture and security compliance milestones confirmed.",
+    "keywords": [
+      "roadmap",
+      "enterprise",
+      "audit logging",
+      "workflows",
+      "integrations",
+      "mobile app",
+      "jira",
+      "security"
+    ],
+    "chapters": [
+      {
+        "title": "Welcome & Roadmap Pillars",
+        "description": "Overview of enterprise tier, workflow triggers, and mobile app.",
+        "start_sec": 0.0,
+        "position": 0
+      },
+      {
+        "title": "Enterprise Security & Audit Logs",
+        "description": "Technical architecture for streaming audit logs and RBAC.",
+        "start_sec": 13.22,
+        "position": 1
+      },
+      {
+        "title": "Workflow Automation Engine",
+        "description": "Integration with Jira, Notion, and Slack via event bus.",
+        "start_sec": 25.12,
+        "position": 2
+      },
+      {
+        "title": "Mobile Companion App Scope",
+        "description": "Offline voice capture and quick review capabilities.",
+        "start_sec": 38.06,
+        "position": 3
+      },
+      {
+        "title": "Milestone Review & Commitments",
+        "description": "Summary of deliverables and sprint allocations.",
+        "start_sec": 49.29,
+        "position": 4
+      }
+    ],
+    "action_items": [
+      {
+        "speaker": "Alex Rivera",
+        "text": "Draft technical specification for webhook delivery engine",
+        "due_date": "2026-10-11",
+        "is_completed": false
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Share high-fidelity Figma prototypes for workflow automation builder",
+        "due_date": "2026-10-09",
+        "is_completed": true
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Schedule customer validation interviews for enterprise tier",
+        "due_date": "2026-10-13",
+        "is_completed": false
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Configure staging audit log streaming test environment",
+        "due_date": "2026-10-16",
+        "is_completed": false
+      }
+    ],
+    "segments": [
+      {
+        "speaker": "Sarah Chen",
+        "text": "Welcome everyone to our Q4 Product Roadmap Planning session. Today we have three core pillars to align on: our enterprise workspace tier, the automated workflow triggers, and our mobile companion app experience.",
+        "start_sec": 0.0,
+        "end_sec": 13.22,
+        "position": 0
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Thanks Sarah. From the engineering perspective, our highest technical risk in Q4 is the real-time syncing architecture for large enterprise workspaces with over five hundred simultaneous active editors.",
+        "start_sec": 13.22,
+        "end_sec": 25.12,
+        "position": 1
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "I've been gathering user feedback from our Tier 1 pilot customers over the past month. The number one requested capability is granular RBAC permissions and audit log streaming directly to Datadog or Splunk.",
+        "start_sec": 25.12,
+        "end_sec": 38.06,
+        "position": 2
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "On the design side, we have completed initial wireframes for the workspace governance settings and the custom role permission builder. The flows tested very well with our design partner group.",
+        "start_sec": 38.06,
+        "end_sec": 49.29,
+        "position": 3
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "That's great progress Elena. Alex, what is the realistic timeline for delivering the backend schema migrations and the pub-sub fanout layer for audit logging?",
+        "start_sec": 49.29,
+        "end_sec": 58.96,
+        "position": 4
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "If we allocate two senior engineers full time starting in sprint 22, we can have the core streaming audit log API in staging by mid-November, leaving two weeks for penetration testing and load tests.",
+        "start_sec": 58.96,
+        "end_sec": 69.93,
+        "position": 5
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "That timeline works nicely for our sales pipeline. We have three enterprise renewal conversations scheduled for early December where audit compliance is a hard requirement.",
+        "start_sec": 69.93,
+        "end_sec": 80.37,
+        "position": 6
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Let's make sure Marcus is involved in the staging acceptance tests. Now moving to our second pillar: automated workflow triggers. Marcus, what are the primary customer use cases here?",
+        "start_sec": 80.37,
+        "end_sec": 92.39,
+        "position": 7
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customers want automated post-meeting triggers. Specifically: auto-generating Jira issues from action items, auto-syncing meeting summaries into Notion knowledge bases, and notifying Slack channels.",
+        "start_sec": 92.39,
+        "end_sec": 105.21,
+        "position": 8
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "We designed a visual workflow builder where users can configure 'When a meeting tagged Product ends, create a Jira epic and post summary to #product-updates'. It's very intuitive.",
+        "start_sec": 105.21,
+        "end_sec": 117.04,
+        "position": 9
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "I've reviewed the webhook architecture for that. We can build on top of our existing event bus. We should use idempotent worker queues with exponential backoff for third-party rate limits.",
+        "start_sec": 117.04,
+        "end_sec": 129.04,
+        "position": 10
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Alex, I'll count on you to draft the technical specification for the webhook delivery engine by next Tuesday so the team can review before sprint planning.",
+        "start_sec": 129.04,
+        "end_sec": 137.82,
+        "position": 11
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "I'll take care of drafting that technical specification by Tuesday and include the rate limiting failure modes and retry policies.",
+        "start_sec": 137.82,
+        "end_sec": 144.85,
+        "position": 12
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "I will share the high-fidelity Figma prototypes for the workflow automation builder by this Friday so frontend engineering can start scaffolding components.",
+        "start_sec": 144.85,
+        "end_sec": 153.73,
+        "position": 13
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Let's also make sure we provide out-of-the-box prebuilt recipe templates for common integrations like Salesforce, HubSpot, and Linear.",
+        "start_sec": 153.73,
+        "end_sec": 161.96,
+        "position": 14
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Agreed. Third pillar: mobile companion app. What is the scope for the initial v1 release?",
+        "start_sec": 161.96,
+        "end_sec": 169.35,
+        "position": 15
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "We recommend React Native or Flutter for cross-platform speed. v1 should focus on offline audio recording, upload queue with background resumption, and reviewing meeting summaries.",
+        "start_sec": 169.35,
+        "end_sec": 180.17,
+        "position": 16
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "The mobile user journeys are optimized for on-the-go professionals: recording a coffee chat, bookmarking key moments with one tap, and viewing assigned action items.",
+        "start_sec": 180.17,
+        "end_sec": 190.32,
+        "position": 17
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Field sales reps will love the one-tap voice note capture. It eliminates the 30 minutes they usually spend typing notes into CRM at the end of the day.",
+        "start_sec": 190.32,
+        "end_sec": 200.26,
+        "position": 18
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Let's summarize our key milestones. Alex leads the webhook tech spec and audit log architecture. Elena finalizes workflow UI and mobile wireframes. Marcus validates the enterprise pricing tier.",
+        "start_sec": 200.26,
+        "end_sec": 214.32,
+        "position": 19
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Sounds like a solid plan. We have clear dependencies and no blockers going into next week's sprint.",
+        "start_sec": 214.32,
+        "end_sec": 221.3,
+        "position": 20
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "I will schedule customer validation interviews for the workflow builder once Elena's interactive prototype is ready.",
+        "start_sec": 221.3,
+        "end_sec": 227.9,
+        "position": 21
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "The prototype link will be in our shared channel by end of day Friday.",
+        "start_sec": 227.9,
+        "end_sec": 232.27,
+        "position": 22
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Thank you everyone for the productive session. Let's execute on these commitments and sync again in our weekly check-in.",
+        "start_sec": 232.27,
+        "end_sec": 239.52,
+        "position": 23
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 25: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 239.52,
+        "end_sec": 248.02,
+        "position": 24
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 26. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 248.02,
+        "end_sec": 257.57,
+        "position": 25
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 257.57,
+        "end_sec": 265.27,
+        "position": 26
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 265.27,
+        "end_sec": 273.45,
+        "position": 27
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 29: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 273.45,
+        "end_sec": 281.85,
+        "position": 28
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 30. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 281.85,
+        "end_sec": 291.09,
+        "position": 29
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 291.09,
+        "end_sec": 298.79,
+        "position": 30
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 298.79,
+        "end_sec": 306.97,
+        "position": 31
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 33: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 306.97,
+        "end_sec": 315.44,
+        "position": 32
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 34. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 315.44,
+        "end_sec": 325.02,
+        "position": 33
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 325.02,
+        "end_sec": 332.72,
+        "position": 34
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 332.72,
+        "end_sec": 340.9,
+        "position": 35
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 37: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 340.9,
+        "end_sec": 349.35,
+        "position": 36
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 38. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 349.35,
+        "end_sec": 358.76,
+        "position": 37
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 358.76,
+        "end_sec": 366.46,
+        "position": 38
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 366.46,
+        "end_sec": 374.64,
+        "position": 39
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 41: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 374.64,
+        "end_sec": 383.02,
+        "position": 40
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 42. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 383.02,
+        "end_sec": 392.52,
+        "position": 41
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 392.52,
+        "end_sec": 400.22,
+        "position": 42
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 400.22,
+        "end_sec": 408.4,
+        "position": 43
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 45: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 408.4,
+        "end_sec": 416.9,
+        "position": 44
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 46. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 416.9,
+        "end_sec": 426.48,
+        "position": 45
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 426.48,
+        "end_sec": 434.18,
+        "position": 46
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 434.18,
+        "end_sec": 442.36,
+        "position": 47
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 49: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 442.36,
+        "end_sec": 450.78,
+        "position": 48
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 50. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 450.78,
+        "end_sec": 460.09,
+        "position": 49
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 460.09,
+        "end_sec": 467.79,
+        "position": 50
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 467.79,
+        "end_sec": 475.97,
+        "position": 51
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 53: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 475.97,
+        "end_sec": 484.47,
+        "position": 52
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 54. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 484.47,
+        "end_sec": 494.07,
+        "position": 53
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 494.07,
+        "end_sec": 501.77,
+        "position": 54
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 501.77,
+        "end_sec": 509.95,
+        "position": 55
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 57: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 509.95,
+        "end_sec": 518.4,
+        "position": 56
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 58. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 518.4,
+        "end_sec": 527.83,
+        "position": 57
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 527.83,
+        "end_sec": 535.53,
+        "position": 58
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 535.53,
+        "end_sec": 543.71,
+        "position": 59
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 61: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 543.71,
+        "end_sec": 552.16,
+        "position": 60
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 62. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 552.16,
+        "end_sec": 561.71,
+        "position": 61
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 561.71,
+        "end_sec": 569.41,
+        "position": 62
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 569.41,
+        "end_sec": 577.59,
+        "position": 63
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 65: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 577.59,
+        "end_sec": 586.16,
+        "position": 64
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 66. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 586.16,
+        "end_sec": 595.78,
+        "position": 65
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 595.78,
+        "end_sec": 603.48,
+        "position": 66
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 603.48,
+        "end_sec": 611.66,
+        "position": 67
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 69: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 611.66,
+        "end_sec": 620.13,
+        "position": 68
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 70. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 620.13,
+        "end_sec": 629.51,
+        "position": 69
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 629.51,
+        "end_sec": 637.21,
+        "position": 70
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 637.21,
+        "end_sec": 645.39,
+        "position": 71
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Reviewing item checkpoint 73: we are validating performance benchmarks and ensuring full test coverage across all workspace endpoints.",
+        "start_sec": 645.39,
+        "end_sec": 653.98,
+        "position": 72
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Telemetry metrics look healthy for checkpoint 74. Database indexing on composite foreign keys has improved query latency by 45 percent.",
+        "start_sec": 653.98,
+        "end_sec": 663.65,
+        "position": 73
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Customer success reported zero onboarding tickets for this sub-module during the last pilot cycle, which confirms high usability.",
+        "start_sec": 663.65,
+        "end_sec": 671.35,
+        "position": 74
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Micro-interactions and keyboard accessibility navigation are fully compliant with WCAG AA standards in the latest component build.",
+        "start_sec": 671.35,
+        "end_sec": 679.53,
+        "position": 75
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Engineering Sprint Retrospective",
+    "date": "2026-10-02T11:10:46.483967",
+    "duration_sec": 404,
+    "audio_url": "/static/audio/meeting_2.mp3",
+    "source": "seed",
+    "tags": [
+      "Engineering"
+    ],
+    "participants": [
+      {
+        "name": "Sarah Chen",
+        "email": "sarah.chen@example.com"
+      },
+      {
+        "name": "Alex Rivera",
+        "email": "alex.rivera@example.com"
+      },
+      {
+        "name": "Marcus Johnson",
+        "email": "marcus.j@example.com"
+      },
+      {
+        "name": "David Kim",
+        "email": "david.kim@example.com"
+      },
+      {
+        "name": "Priya Sharma",
+        "email": "priya.s@example.com"
+      }
+    ],
+    "summary_overview": "Sprint 21 retrospective reviewing the successful launch of audio waveform visualizations and search indexing optimizations. Root cause analysis of staging migration lock contention and adoption of non-blocking migration guidelines.",
+    "keywords": [
+      "retrospective",
+      "performance",
+      "database",
+      "migrations",
+      "test coverage",
+      "waveform",
+      "cypress"
+    ],
+    "chapters": [
+      {
+        "title": "Sprint Highlights & Wins",
+        "description": "Waveform visualizer delivery and search latency improvements.",
+        "start_sec": 0.0,
+        "position": 0
+      },
+      {
+        "title": "Staging Migration Root Cause Analysis",
+        "description": "Investigating table lock contention during composite index creation.",
+        "start_sec": 9.91,
+        "position": 1
+      },
+      {
+        "title": "Testing & Background Playback Verification",
+        "description": "Unit test coverage for performance.now() clock sync.",
+        "start_sec": 18.67,
+        "position": 2
+      },
+      {
+        "title": "Action Plan for Sprint 22",
+        "description": "Commitments on migration checklists and batch ingestion.",
+        "start_sec": 30.26,
+        "position": 3
+      }
+    ],
+    "action_items": [
+      {
+        "speaker": "Priya Sharma",
+        "text": "Create migration safety checklist and PR linting rules",
+        "due_date": "2026-10-04",
+        "is_completed": true
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Refactor transcript ingestion worker to batch insert segments",
+        "due_date": "2026-10-06",
+        "is_completed": false
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Audit background tab audio playback telemetry in production",
+        "due_date": "2026-10-08",
+        "is_completed": false
+      }
+    ],
+    "segments": [
+      {
+        "speaker": "Alex Rivera",
+        "text": "Welcome to the Sprint 21 Retrospective. Let's do a quick round on what went well, what could be improved, and our concrete action items for the upcoming sprint.",
+        "start_sec": 0.0,
+        "end_sec": 9.91,
+        "position": 0
+      },
+      {
+        "speaker": "David Kim",
+        "text": "On the positive side, we successfully shipped the new audio waveform visualizer ahead of schedule with zero regression bugs reported in staging.",
+        "start_sec": 9.91,
+        "end_sec": 18.67,
+        "position": 1
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "The automated end-to-end Cypress test suite saved us several hours during release testing. Catching the Safari audio context bug before production was a huge win.",
+        "start_sec": 18.67,
+        "end_sec": 30.26,
+        "position": 2
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "From the product side, the latency improvement in search indexing was immediately noticeable. Library queries dropped from 450ms down to under 50ms.",
+        "start_sec": 30.26,
+        "end_sec": 41.61,
+        "position": 3
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Great work team. Now let's address the friction points. We had two staging environment outages during mid-sprint database migrations.",
+        "start_sec": 41.61,
+        "end_sec": 51.02,
+        "position": 4
+      },
+      {
+        "speaker": "David Kim",
+        "text": "The root cause was lock contention on the transcript segments table while adding new composite indexes under high concurrent mock ingestion load.",
+        "start_sec": 51.02,
+        "end_sec": 59.3,
+        "position": 5
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "We need to adopt non-blocking concurrent index creation and establish automated pre-migration lock inspection scripts for our deployment pipeline.",
+        "start_sec": 59.3,
+        "end_sec": 67.36,
+        "position": 6
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "I'll create the migration safety guideline checklist and configure automated PR linting rules for dangerous database schema operations by Thursday.",
+        "start_sec": 67.36,
+        "end_sec": 77.18,
+        "position": 7
+      },
+      {
+        "speaker": "David Kim",
+        "text": "I will refactor the transcript ingestion worker to batch insert segments in chunks of 500 rows to reduce transaction hold times.",
+        "start_sec": 77.18,
+        "end_sec": 85.08,
+        "position": 8
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "How is our test coverage on the simulated clock playback engine and background tab synchronization?",
+        "start_sec": 85.08,
+        "end_sec": 90.65,
+        "position": 9
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We added unit tests for elapsed time drift using performance.now() and verified that audio sync remains within 50ms even when tabs are throttled in the background.",
+        "start_sec": 90.65,
+        "end_sec": 102.55,
+        "position": 10
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's wrap up with our action items. Priya owns the migration checklist and David handles batch ingestion optimization.",
+        "start_sec": 102.55,
+        "end_sec": 110.13,
+        "position": 11
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 13: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 110.13,
+        "end_sec": 117.91,
+        "position": 12
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 117.91,
+        "end_sec": 126.29,
+        "position": 13
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 126.29,
+        "end_sec": 132.58,
+        "position": 14
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 16: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 132.58,
+        "end_sec": 140.43,
+        "position": 15
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 140.43,
+        "end_sec": 148.81,
+        "position": 16
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 148.81,
+        "end_sec": 155.1,
+        "position": 17
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 19: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 155.1,
+        "end_sec": 162.88,
+        "position": 18
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 162.88,
+        "end_sec": 171.26,
+        "position": 19
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 171.26,
+        "end_sec": 177.55,
+        "position": 20
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 22: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 177.55,
+        "end_sec": 185.47,
+        "position": 21
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 185.47,
+        "end_sec": 193.85,
+        "position": 22
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 193.85,
+        "end_sec": 200.14,
+        "position": 23
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 25: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 200.14,
+        "end_sec": 208.11,
+        "position": 24
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 208.11,
+        "end_sec": 216.49,
+        "position": 25
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 216.49,
+        "end_sec": 222.78,
+        "position": 26
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 28: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 222.78,
+        "end_sec": 230.65,
+        "position": 27
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 230.65,
+        "end_sec": 239.03,
+        "position": 28
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 239.03,
+        "end_sec": 245.32,
+        "position": 29
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 31: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 245.32,
+        "end_sec": 253.22,
+        "position": 30
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 253.22,
+        "end_sec": 261.6,
+        "position": 31
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 261.6,
+        "end_sec": 267.89,
+        "position": 32
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 34: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 267.89,
+        "end_sec": 275.88,
+        "position": 33
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 275.88,
+        "end_sec": 284.26,
+        "position": 34
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 284.26,
+        "end_sec": 290.55,
+        "position": 35
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 37: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 290.55,
+        "end_sec": 298.45,
+        "position": 36
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 298.45,
+        "end_sec": 306.83,
+        "position": 37
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 306.83,
+        "end_sec": 313.12,
+        "position": 38
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 40: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 313.12,
+        "end_sec": 320.73,
+        "position": 39
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 320.73,
+        "end_sec": 329.11,
+        "position": 40
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 329.11,
+        "end_sec": 335.4,
+        "position": 41
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 43: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 335.4,
+        "end_sec": 343.34,
+        "position": 42
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 343.34,
+        "end_sec": 351.72,
+        "position": 43
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 351.72,
+        "end_sec": 358.01,
+        "position": 44
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 46: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 358.01,
+        "end_sec": 365.98,
+        "position": 45
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 365.98,
+        "end_sec": 374.36,
+        "position": 46
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 374.36,
+        "end_sec": 380.65,
+        "position": 47
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Retro item 49: CI build pipeline speed has improved by 20 percent after caching Docker layer dependencies.",
+        "start_sec": 380.65,
+        "end_sec": 388.55,
+        "position": 48
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "We also noticed that memory profiling showed zero leaks in our WebSocket connection pools over a 72-hour soak test.",
+        "start_sec": 388.55,
+        "end_sec": 396.93,
+        "position": 49
+      },
+      {
+        "speaker": "Alex Rivera",
+        "text": "Let's ensure that every new PR includes unit tests for both happy and unhappy path error handling before merging.",
+        "start_sec": 396.93,
+        "end_sec": 403.22,
+        "position": 50
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Client Onboarding — Acme Corp",
+    "date": "2026-09-26T14:10:46.483967",
+    "duration_sec": 337,
+    "audio_url": "/static/audio/meeting_3.mp3",
+    "source": "seed",
+    "tags": [
+      "Product",
+      "Client"
+    ],
+    "participants": [
+      {
+        "name": "Sarah Chen",
+        "email": "sarah.chen@example.com"
+      },
+      {
+        "name": "Marcus Johnson",
+        "email": "marcus.j@example.com"
+      },
+      {
+        "name": "Tom Becker",
+        "email": "tom.becker@acmecorp.com"
+      }
+    ],
+    "summary_overview": "Kickoff onboarding session with Acme Corp IT leadership. Covered Okta SAML 2.0 SCIM automated provisioning, custom 90-day audio purge retention policies, and scheduling admin training.",
+    "keywords": [
+      "onboarding",
+      "acme corp",
+      "saml",
+      "scim",
+      "retention",
+      "compliance",
+      "training"
+    ],
+    "chapters": [
+      {
+        "title": "Introductions & Kickoff Objectives",
+        "description": "Overview of deployment timeline for 300 account executives.",
+        "start_sec": 0.0,
+        "position": 0
+      },
+      {
+        "title": "Okta SSO & SCIM Provisioning",
+        "description": "Configuring identity provider metadata and user groups.",
+        "start_sec": 7.03,
+        "position": 1
+      },
+      {
+        "title": "Compliance & Audio Data Retention",
+        "description": "Setting 90-day audio auto-deletion with permanent transcripts.",
+        "start_sec": 17.61,
+        "position": 2
+      },
+      {
+        "title": "Next Steps & Admin Training",
+        "description": "Scheduling sandbox validation and team walkthrough.",
+        "start_sec": 27.31,
+        "position": 3
+      }
+    ],
+    "action_items": [
+      {
+        "speaker": "Sarah Chen",
+        "text": "Configure dedicated sandbox tenant and send SAML metadata XML",
+        "due_date": "2026-09-27",
+        "is_completed": true
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Review network IP allowlist configuration with Acme security team",
+        "due_date": "2026-09-30",
+        "is_completed": true
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Deliver administrator training session for Acme sales ops",
+        "due_date": "2026-10-04",
+        "is_completed": false
+      }
+    ],
+    "segments": [
+      {
+        "speaker": "Sarah Chen",
+        "text": "Good morning Tom! Welcome to the official kickoff and onboarding call for Acme Corp's enterprise deployment.",
+        "start_sec": 0.0,
+        "end_sec": 7.03,
+        "position": 0
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Hi Sarah and Marcus, thanks for setting this up. Our security and IT team is excited to roll this out to our 300 account executives next month.",
+        "start_sec": 7.03,
+        "end_sec": 17.61,
+        "position": 1
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We're thrilled to partner with Acme. Today we'll review your SSO SAML integration, custom retention policies, and team workspace provisioning.",
+        "start_sec": 17.61,
+        "end_sec": 27.31,
+        "position": 2
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our main technical requirement is Okta SAML 2.0 with SCIM automated user provisioning so employees are automatically assigned to their sales territory workspaces.",
+        "start_sec": 27.31,
+        "end_sec": 39.53,
+        "position": 3
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "We have direct Okta SCIM connectors ready. I'll configure your dedicated sandbox tenant today and send over the metadata XML endpoints.",
+        "start_sec": 39.53,
+        "end_sec": 48.87,
+        "position": 4
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "That sounds straightforward. What about data retention? We have strict industry compliance requiring auto-deletion of raw audio files after 90 days while preserving transcripts.",
+        "start_sec": 48.87,
+        "end_sec": 61.52,
+        "position": 5
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Our enterprise governance settings allow custom granular retention policies. You can set audio auto-purge to 90 days while retaining searchable transcripts indefinitely.",
+        "start_sec": 61.52,
+        "end_sec": 72.18,
+        "position": 6
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Perfect. Let's schedule our admin training session for next Tuesday afternoon once the sandbox is provisioned.",
+        "start_sec": 72.18,
+        "end_sec": 79.74,
+        "position": 7
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 9: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 79.74,
+        "end_sec": 88.21,
+        "position": 8
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 88.21,
+        "end_sec": 94.67,
+        "position": 9
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 94.67,
+        "end_sec": 100.98,
+        "position": 10
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 12: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 100.98,
+        "end_sec": 109.43,
+        "position": 11
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 109.43,
+        "end_sec": 115.89,
+        "position": 12
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 115.89,
+        "end_sec": 122.2,
+        "position": 13
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 15: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 122.2,
+        "end_sec": 130.74,
+        "position": 14
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 130.74,
+        "end_sec": 137.2,
+        "position": 15
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 137.2,
+        "end_sec": 143.51,
+        "position": 16
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 18: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 143.51,
+        "end_sec": 152.03,
+        "position": 17
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 152.03,
+        "end_sec": 158.49,
+        "position": 18
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 158.49,
+        "end_sec": 164.8,
+        "position": 19
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 21: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 164.8,
+        "end_sec": 173.49,
+        "position": 20
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 173.49,
+        "end_sec": 179.95,
+        "position": 21
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 179.95,
+        "end_sec": 186.26,
+        "position": 22
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 24: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 186.26,
+        "end_sec": 195.04,
+        "position": 23
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 195.04,
+        "end_sec": 201.5,
+        "position": 24
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 201.5,
+        "end_sec": 207.81,
+        "position": 25
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 27: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 207.81,
+        "end_sec": 216.59,
+        "position": 26
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 216.59,
+        "end_sec": 223.05,
+        "position": 27
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 223.05,
+        "end_sec": 229.36,
+        "position": 28
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 30: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 229.36,
+        "end_sec": 237.71,
+        "position": 29
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 237.71,
+        "end_sec": 244.17,
+        "position": 30
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 244.17,
+        "end_sec": 250.48,
+        "position": 31
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 33: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 250.48,
+        "end_sec": 259.19,
+        "position": 32
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 259.19,
+        "end_sec": 265.65,
+        "position": 33
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 265.65,
+        "end_sec": 271.96,
+        "position": 34
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 36: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 271.96,
+        "end_sec": 280.77,
+        "position": 35
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 280.77,
+        "end_sec": 287.23,
+        "position": 36
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 287.23,
+        "end_sec": 293.54,
+        "position": 37
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 39: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 293.54,
+        "end_sec": 302.2,
+        "position": 38
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 302.2,
+        "end_sec": 308.66,
+        "position": 39
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 308.66,
+        "end_sec": 314.97,
+        "position": 40
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Onboarding checkpoint 42: Verifying domain verification DNS records and SSL termination for the Acme custom vanity domain.",
+        "start_sec": 314.97,
+        "end_sec": 323.66,
+        "position": 41
+      },
+      {
+        "speaker": "Tom Becker",
+        "text": "Our IT team has approved the IP allowlisting rules for webhook callbacks from your platform.",
+        "start_sec": 323.66,
+        "end_sec": 330.12,
+        "position": 42
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "We have prepared tailored onboarding slide decks and interactive product walkthroughs for the sales team rollout.",
+        "start_sec": 330.12,
+        "end_sec": 336.43,
+        "position": 43
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Weekly Marketing Sync",
+    "date": "2026-09-20T12:10:46.483967",
+    "duration_sec": 248,
+    "audio_url": "/static/audio/meeting_4.mp3",
+    "source": "seed",
+    "tags": [
+      "Marketing"
+    ],
+    "participants": [
+      {
+        "name": "Sarah Chen",
+        "email": "sarah.chen@example.com"
+      },
+      {
+        "name": "Marcus Johnson",
+        "email": "marcus.j@example.com"
+      },
+      {
+        "name": "Elena Rostova",
+        "email": "elena.r@example.com"
+      },
+      {
+        "name": "Priya Sharma",
+        "email": "priya.s@example.com"
+      }
+    ],
+    "summary_overview": "Review of Q4 marketing campaign results with 45,000 unique visitors and 14% conversion. Planned launch of customer video stories page and upcoming Acme Corp case study.",
+    "keywords": [
+      "marketing",
+      "conversion",
+      "case study",
+      "traffic",
+      "developer blog",
+      "design"
+    ],
+    "chapters": [
+      {
+        "title": "Campaign Performance Overview",
+        "description": "Traffic surge and free trial conversion analysis.",
+        "start_sec": 0.0,
+        "position": 0
+      },
+      {
+        "title": "Channel Breakdown & Top Performers",
+        "description": "Developer blog and LinkedIn case study performance.",
+        "start_sec": 10.1,
+        "position": 1
+      },
+      {
+        "title": "Customer Stories Page & Next Steps",
+        "description": "Video testimonials and upcoming case studies.",
+        "start_sec": 18.45,
+        "position": 2
+      }
+    ],
+    "action_items": [
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Finalize case study draft with Acme Corp VP of Sales",
+        "due_date": "2026-09-23",
+        "is_completed": false
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Deploy A/B test for redesigned pricing page headline",
+        "due_date": "2026-09-25",
+        "is_completed": false
+      }
+    ],
+    "segments": [
+      {
+        "speaker": "Elena Rostova",
+        "text": "Welcome to our weekly marketing sync. Today we're reviewing our Q4 campaign launch, website redesign metrics, and customer case study pipeline.",
+        "start_sec": 0.0,
+        "end_sec": 10.1,
+        "position": 0
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Our latest product announcement generated over 45,000 unique visitors last week with a 14 percent free trial signup conversion rate.",
+        "start_sec": 10.1,
+        "end_sec": 18.45,
+        "position": 1
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Those are outstanding conversion numbers Marcus. What channels contributed the highest qualified enterprise leads?",
+        "start_sec": 18.45,
+        "end_sec": 25.82,
+        "position": 2
+      },
+      {
+        "speaker": "Priya Sharma",
+        "text": "Our organic developer blog post on high-performance audio synchronization and our LinkedIn case study with TechCorp drove 65 percent of organic signups.",
+        "start_sec": 25.82,
+        "end_sec": 36.52,
+        "position": 3
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "I have finished designing the new customer stories page featuring video testimonials and interactive transcript snippets.",
+        "start_sec": 36.52,
+        "end_sec": 43.82,
+        "position": 4
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "I'll finalize the case study interview with Acme Corp's VP of Sales by Wednesday and share the draft copy for marketing review.",
+        "start_sec": 43.82,
+        "end_sec": 51.5,
+        "position": 5
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Let's ensure the new landing page A/B test runs for at least 14 days before declaring a winning headline variation.",
+        "start_sec": 51.5,
+        "end_sec": 58.58,
+        "position": 6
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 8: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 58.58,
+        "end_sec": 65.3,
+        "position": 7
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 65.3,
+        "end_sec": 71.83,
+        "position": 8
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 10: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 71.83,
+        "end_sec": 78.67,
+        "position": 9
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 78.67,
+        "end_sec": 85.2,
+        "position": 10
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 12: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 85.2,
+        "end_sec": 91.97,
+        "position": 11
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 91.97,
+        "end_sec": 98.5,
+        "position": 12
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 14: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 98.5,
+        "end_sec": 105.56,
+        "position": 13
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 105.56,
+        "end_sec": 112.09,
+        "position": 14
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 16: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 112.09,
+        "end_sec": 119.17,
+        "position": 15
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 119.17,
+        "end_sec": 125.7,
+        "position": 16
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 18: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 125.7,
+        "end_sec": 132.68,
+        "position": 17
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 132.68,
+        "end_sec": 139.21,
+        "position": 18
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 20: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 139.21,
+        "end_sec": 146.12,
+        "position": 19
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 146.12,
+        "end_sec": 152.65,
+        "position": 20
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 22: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 152.65,
+        "end_sec": 159.73,
+        "position": 21
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 159.73,
+        "end_sec": 166.26,
+        "position": 22
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 24: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 166.26,
+        "end_sec": 173.36,
+        "position": 23
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 173.36,
+        "end_sec": 179.89,
+        "position": 24
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 26: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 179.89,
+        "end_sec": 187.07,
+        "position": 25
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 187.07,
+        "end_sec": 193.6,
+        "position": 26
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 28: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 193.6,
+        "end_sec": 200.7,
+        "position": 27
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 200.7,
+        "end_sec": 207.23,
+        "position": 28
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 30: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 207.23,
+        "end_sec": 214.07,
+        "position": 29
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 214.07,
+        "end_sec": 220.6,
+        "position": 30
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 32: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 220.6,
+        "end_sec": 227.68,
+        "position": 31
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 227.68,
+        "end_sec": 234.21,
+        "position": 32
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Marketing review 34: Asset production for YouTube product tutorials is on schedule for next month's launch.",
+        "start_sec": 234.21,
+        "end_sec": 241.31,
+        "position": 33
+      },
+      {
+        "speaker": "Marcus Johnson",
+        "text": "Social media engagement metrics increased by 28 percent week-over-week across developer communities.",
+        "start_sec": 241.31,
+        "end_sec": 247.84,
+        "position": 34
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Design Review: Dashboard Redesign",
+    "date": "2026-09-12T15:10:46.483967",
+    "duration_sec": 438,
+    "audio_url": "/static/audio/meeting_5.mp3",
+    "source": "seed",
+    "tags": [
+      "Product",
+      "Design"
+    ],
+    "participants": [
+      {
+        "name": "Sarah Chen",
+        "email": "sarah.chen@example.com"
+      },
+      {
+        "name": "Elena Rostova",
+        "email": "elena.r@example.com"
+      },
+      {
+        "name": "David Kim",
+        "email": "david.kim@example.com"
+      }
+    ],
+    "summary_overview": "Comprehensive design review of the new meeting detail layout, sticky audio player, synchronized transcript highlights, and accessible Radix UI dialog primitives.",
+    "keywords": [
+      "design review",
+      "ui/ux",
+      "sticky player",
+      "memoization",
+      "accessibility",
+      "wcag"
+    ],
+    "chapters": [
+      {
+        "title": "Meeting Detail Layout Overview",
+        "description": "Sticky top player and tabbed summary panel hierarchy.",
+        "start_sec": 0.0,
+        "position": 0
+      },
+      {
+        "title": "User Testing & Chapter Pill Feedback",
+        "description": "Results showing 50% faster key moment retrieval.",
+        "start_sec": 8.98,
+        "position": 1
+      },
+      {
+        "title": "Frontend Performance & Mobile Adaptations",
+        "description": "TranscriptLine memoization and mobile drawer layouts.",
+        "start_sec": 18.36,
+        "position": 2
+      }
+    ],
+    "action_items": [
+      {
+        "speaker": "Elena Rostova",
+        "text": "Create responsive bottom sheet drawer specs for mobile screens",
+        "due_date": "2026-09-16",
+        "is_completed": true
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Audit tab navigation keyboard accessibility on Safari and Chrome",
+        "due_date": "2026-09-17",
+        "is_completed": true
+      }
+    ],
+    "segments": [
+      {
+        "speaker": "Elena Rostova",
+        "text": "Thanks for joining the design review. Today we are walking through the comprehensive overhaul of our meeting detail page and AI insights panel.",
+        "start_sec": 0.0,
+        "end_sec": 8.98,
+        "position": 0
+      },
+      {
+        "speaker": "David Kim",
+        "text": "The new layout looks much cleaner Elena. Moving the synchronized audio player to a sticky top position makes transcript navigation effortless.",
+        "start_sec": 8.98,
+        "end_sec": 18.36,
+        "position": 1
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "I really like how the action items and chapter markers are given dedicated tabs with clear visual hierarchy and instant seek feedback.",
+        "start_sec": 18.36,
+        "end_sec": 26.28,
+        "position": 2
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "We conducted user testing with eight power users. Seven out of eight noted that having clickable chapter pills reduced their time to find key decisions by half.",
+        "start_sec": 26.28,
+        "end_sec": 36.34,
+        "position": 3
+      },
+      {
+        "speaker": "David Kim",
+        "text": "From a frontend performance perspective, keeping TranscriptLine memoized with isActive boolean props ensures smooth 60fps scrolling during playback.",
+        "start_sec": 36.34,
+        "end_sec": 46.04,
+        "position": 4
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Let's make sure the mobile viewport handles the tabbed summary gracefully with a responsive bottom sheet drawer for compact screens.",
+        "start_sec": 46.04,
+        "end_sec": 53.17,
+        "position": 5
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 7: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 53.17,
+        "end_sec": 60.83,
+        "position": 6
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 60.83,
+        "end_sec": 67.84,
+        "position": 7
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 67.84,
+        "end_sec": 74.34,
+        "position": 8
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 10: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 74.34,
+        "end_sec": 81.97,
+        "position": 9
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 81.97,
+        "end_sec": 88.98,
+        "position": 10
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 88.98,
+        "end_sec": 95.48,
+        "position": 11
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 13: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 95.48,
+        "end_sec": 103.4,
+        "position": 12
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 103.4,
+        "end_sec": 110.41,
+        "position": 13
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 110.41,
+        "end_sec": 116.91,
+        "position": 14
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 16: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 116.91,
+        "end_sec": 124.85,
+        "position": 15
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 124.85,
+        "end_sec": 131.86,
+        "position": 16
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 131.86,
+        "end_sec": 138.36,
+        "position": 17
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 19: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 138.36,
+        "end_sec": 146.18,
+        "position": 18
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 146.18,
+        "end_sec": 153.19,
+        "position": 19
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 153.19,
+        "end_sec": 159.69,
+        "position": 20
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 22: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 159.69,
+        "end_sec": 167.56,
+        "position": 21
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 167.56,
+        "end_sec": 174.57,
+        "position": 22
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 174.57,
+        "end_sec": 181.07,
+        "position": 23
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 25: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 181.07,
+        "end_sec": 188.99,
+        "position": 24
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 188.99,
+        "end_sec": 196.0,
+        "position": 25
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 196.0,
+        "end_sec": 202.5,
+        "position": 26
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 28: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 202.5,
+        "end_sec": 210.25,
+        "position": 27
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 210.25,
+        "end_sec": 217.26,
+        "position": 28
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 217.26,
+        "end_sec": 223.76,
+        "position": 29
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 31: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 223.76,
+        "end_sec": 231.66,
+        "position": 30
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 231.66,
+        "end_sec": 238.67,
+        "position": 31
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 238.67,
+        "end_sec": 245.17,
+        "position": 32
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 34: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 245.17,
+        "end_sec": 253.09,
+        "position": 33
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 253.09,
+        "end_sec": 260.1,
+        "position": 34
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 260.1,
+        "end_sec": 266.6,
+        "position": 35
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 37: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 266.6,
+        "end_sec": 274.54,
+        "position": 36
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 274.54,
+        "end_sec": 281.55,
+        "position": 37
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 281.55,
+        "end_sec": 288.05,
+        "position": 38
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 40: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 288.05,
+        "end_sec": 295.66,
+        "position": 39
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 295.66,
+        "end_sec": 302.67,
+        "position": 40
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 302.67,
+        "end_sec": 309.17,
+        "position": 41
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 43: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 309.17,
+        "end_sec": 317.04,
+        "position": 42
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 317.04,
+        "end_sec": 324.05,
+        "position": 43
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 324.05,
+        "end_sec": 330.55,
+        "position": 44
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 46: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 330.55,
+        "end_sec": 338.54,
+        "position": 45
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 338.54,
+        "end_sec": 345.55,
+        "position": 46
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 345.55,
+        "end_sec": 352.05,
+        "position": 47
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 49: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 352.05,
+        "end_sec": 359.99,
+        "position": 48
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 359.99,
+        "end_sec": 367.0,
+        "position": 49
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 367.0,
+        "end_sec": 373.5,
+        "position": 50
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 52: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 373.5,
+        "end_sec": 381.4,
+        "position": 51
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 381.4,
+        "end_sec": 388.41,
+        "position": 52
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 388.41,
+        "end_sec": 394.91,
+        "position": 53
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 55: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 394.91,
+        "end_sec": 402.9,
+        "position": 54
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 402.9,
+        "end_sec": 409.91,
+        "position": 55
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 409.91,
+        "end_sec": 416.41,
+        "position": 56
+      },
+      {
+        "speaker": "Elena Rostova",
+        "text": "Design iteration 58: Color contrast on speaker badges and timestamp markers exceeds WCAG AAA criteria.",
+        "start_sec": 416.41,
+        "end_sec": 424.28,
+        "position": 57
+      },
+      {
+        "speaker": "David Kim",
+        "text": "Implemented Radix UI accessible dialog primitives for the delete confirmation and participant management modals.",
+        "start_sec": 424.28,
+        "end_sec": 431.29,
+        "position": 58
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "The micro-animations on checkbox completion provide satisfying user feedback without distracting from reading.",
+        "start_sec": 431.29,
+        "end_sec": 437.79,
+        "position": 59
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Investor Update Call",
+    "date": "2026-09-02T10:10:46.483967",
+    "duration_sec": 532,
+    "audio_url": "/static/audio/meeting_6.mp3",
+    "source": "seed",
+    "tags": [
+      "Executive"
+    ],
+    "participants": [
+      {
+        "name": "Sarah Chen",
+        "email": "sarah.chen@example.com"
+      },
+      {
+        "name": "Rachel Vance",
+        "email": "rachel.vance@venture.com"
+      }
+    ],
+    "summary_overview": "Quarterly strategic review with key investors. Reported $4.2M ARR with 140% YoY growth and 128% net revenue retention. Outlined gross margin expansion to 81% and strategic hiring roadmap.",
+    "keywords": [
+      "investor update",
+      "arr growth",
+      "net retention",
+      "gross margin",
+      "unit economics",
+      "expansion"
+    ],
+    "chapters": [
+      {
+        "title": "Financial Performance & Retention Metrics",
+        "description": "Reporting $4.2M ARR and 128% net retention.",
+        "start_sec": 0.0,
+        "position": 0
+      },
+      {
+        "title": "Enterprise Land & Expand Dynamics",
+        "description": "Product-led adoption expanding across enterprise departments.",
+        "start_sec": 9.14,
+        "position": 1
+      },
+      {
+        "title": "Gross Margin & Cost Optimization",
+        "description": "Self-hosted inference pipeline efficiency gains.",
+        "start_sec": 16.44,
+        "position": 2
+      },
+      {
+        "title": "Hiring & Strategic Pipeline",
+        "description": "Go-to-market scaling and investor customer introductions.",
+        "start_sec": 28.68,
+        "position": 3
+      }
+    ],
+    "action_items": [
+      {
+        "speaker": "Sarah Chen",
+        "text": "Send updated investor metrics deck and Q4 financial model",
+        "due_date": "2026-09-04",
+        "is_completed": true
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Coordinate introductory calls with enterprise prospects in investor network",
+        "due_date": "2026-09-08",
+        "is_completed": false
+      }
+    ],
+    "segments": [
+      {
+        "speaker": "Sarah Chen",
+        "text": "Hello Rachel, thank you for joining our Q3 Investor and Strategic Update call. I'm excited to share our financial and operational progress.",
+        "start_sec": 0.0,
+        "end_sec": 9.14,
+        "position": 0
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "Hi Sarah, looking forward to it. The high-level numbers you sent over in the executive memo looked very promising.",
+        "start_sec": 9.14,
+        "end_sec": 16.44,
+        "position": 1
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "We closed Q3 at $4.2M ARR, representing 140 percent year-over-year growth with net revenue retention holding strong at 128 percent across enterprise accounts.",
+        "start_sec": 16.44,
+        "end_sec": 28.68,
+        "position": 2
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "That net retention rate is top-quartile for B2B SaaS in our portfolio. What is driving the account expansion within existing customers?",
+        "start_sec": 28.68,
+        "end_sec": 37.44,
+        "position": 3
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Our land-and-expand motion begins in engineering and product teams. Once they experience automated meeting intelligence, sales and executive leadership adopt it company-wide.",
+        "start_sec": 37.44,
+        "end_sec": 48.46,
+        "position": 4
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "What is your gross margin profile currently, especially with AI inference and transcription infrastructure costs?",
+        "start_sec": 48.46,
+        "end_sec": 55.08,
+        "position": 5
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Our gross margin improved from 72 percent to 81 percent this quarter by optimizing our self-hosted inference pipelines and batching summary generation.",
+        "start_sec": 55.08,
+        "end_sec": 64.27,
+        "position": 6
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "That is impressive operational efficiency. What are your hiring and capital allocation priorities for the next two quarters?",
+        "start_sec": 64.27,
+        "end_sec": 71.78,
+        "position": 7
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "We are scaling our enterprise go-to-market team and hiring four key engineers in distributed systems and real-time streaming media processing.",
+        "start_sec": 71.78,
+        "end_sec": 79.89,
+        "position": 8
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "I will introduce you to two prospective enterprise customer prospects in our network who are looking for a next-generation meeting intelligence platform.",
+        "start_sec": 79.89,
+        "end_sec": 87.35,
+        "position": 9
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 11: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 87.35,
+        "end_sec": 95.49,
+        "position": 10
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 95.49,
+        "end_sec": 102.45,
+        "position": 11
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 13: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 102.45,
+        "end_sec": 110.66,
+        "position": 12
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 110.66,
+        "end_sec": 117.62,
+        "position": 13
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 15: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 117.62,
+        "end_sec": 125.78,
+        "position": 14
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 125.78,
+        "end_sec": 132.74,
+        "position": 15
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 17: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 132.74,
+        "end_sec": 141.04,
+        "position": 16
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 141.04,
+        "end_sec": 148.0,
+        "position": 17
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 19: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 148.0,
+        "end_sec": 156.21,
+        "position": 18
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 156.21,
+        "end_sec": 163.17,
+        "position": 19
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 21: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 163.17,
+        "end_sec": 171.52,
+        "position": 20
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 171.52,
+        "end_sec": 178.48,
+        "position": 21
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 23: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 178.48,
+        "end_sec": 186.88,
+        "position": 22
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 186.88,
+        "end_sec": 193.84,
+        "position": 23
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 25: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 193.84,
+        "end_sec": 202.17,
+        "position": 24
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 202.17,
+        "end_sec": 209.13,
+        "position": 25
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 27: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 209.13,
+        "end_sec": 217.53,
+        "position": 26
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 217.53,
+        "end_sec": 224.49,
+        "position": 27
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 29: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 224.49,
+        "end_sec": 232.82,
+        "position": 28
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 232.82,
+        "end_sec": 239.78,
+        "position": 29
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 31: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 239.78,
+        "end_sec": 248.11,
+        "position": 30
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 248.11,
+        "end_sec": 255.07,
+        "position": 31
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 33: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 255.07,
+        "end_sec": 263.45,
+        "position": 32
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 263.45,
+        "end_sec": 270.41,
+        "position": 33
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 35: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 270.41,
+        "end_sec": 278.76,
+        "position": 34
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 278.76,
+        "end_sec": 285.72,
+        "position": 35
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 37: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 285.72,
+        "end_sec": 294.1,
+        "position": 36
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 294.1,
+        "end_sec": 301.06,
+        "position": 37
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 39: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 301.06,
+        "end_sec": 309.39,
+        "position": 38
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 309.39,
+        "end_sec": 316.35,
+        "position": 39
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 41: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 316.35,
+        "end_sec": 324.73,
+        "position": 40
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 324.73,
+        "end_sec": 331.69,
+        "position": 41
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 43: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 331.69,
+        "end_sec": 340.07,
+        "position": 42
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 340.07,
+        "end_sec": 347.03,
+        "position": 43
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 45: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 347.03,
+        "end_sec": 355.38,
+        "position": 44
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 355.38,
+        "end_sec": 362.34,
+        "position": 45
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 47: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 362.34,
+        "end_sec": 370.81,
+        "position": 46
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 370.81,
+        "end_sec": 377.77,
+        "position": 47
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 49: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 377.77,
+        "end_sec": 386.12,
+        "position": 48
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 386.12,
+        "end_sec": 393.08,
+        "position": 49
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 51: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 393.08,
+        "end_sec": 401.46,
+        "position": 50
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 401.46,
+        "end_sec": 408.42,
+        "position": 51
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 53: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 408.42,
+        "end_sec": 416.8,
+        "position": 52
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 416.8,
+        "end_sec": 423.76,
+        "position": 53
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 55: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 423.76,
+        "end_sec": 432.11,
+        "position": 54
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 432.11,
+        "end_sec": 439.07,
+        "position": 55
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 57: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 439.07,
+        "end_sec": 447.47,
+        "position": 56
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 447.47,
+        "end_sec": 454.43,
+        "position": 57
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 59: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 454.43,
+        "end_sec": 462.78,
+        "position": 58
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 462.78,
+        "end_sec": 469.74,
+        "position": 59
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 61: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 469.74,
+        "end_sec": 478.19,
+        "position": 60
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 478.19,
+        "end_sec": 485.15,
+        "position": 61
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 63: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 485.15,
+        "end_sec": 493.62,
+        "position": 62
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 493.62,
+        "end_sec": 500.58,
+        "position": 63
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 65: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 500.58,
+        "end_sec": 509.0,
+        "position": 64
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 509.0,
+        "end_sec": 515.96,
+        "position": 65
+      },
+      {
+        "speaker": "Sarah Chen",
+        "text": "Investor checkpoint 67: Customer payback period is down to 7 months, providing strong unit economics for our growth strategy.",
+        "start_sec": 515.96,
+        "end_sec": 524.46,
+        "position": 66
+      },
+      {
+        "speaker": "Rachel Vance",
+        "text": "The strategic moat around proprietary workflow integrations and high customer switching costs is clearly materializing.",
+        "start_sec": 524.46,
+        "end_sec": 531.42,
+        "position": 67
+      }
+    ]
+  }
+]
