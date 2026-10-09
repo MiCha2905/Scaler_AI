@@ -130,7 +130,7 @@ async def upload_meeting_transcript(
         total_bytes += len(chunk)
         if total_bytes > MAX_BYTES:
             raise HTTPException(
-                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                status_code=413,
                 detail={"error": {"code": "file_too_large", "message": "Uploaded file exceeds maximum limit of 2MB", "details": []}}
             )
         chunks.append(chunk)

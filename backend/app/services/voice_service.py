@@ -128,10 +128,15 @@ async def synthesize_edge_turn_safe(text: str, voice: str, sem: asyncio.Semaphor
     return create_synthetic_frame(estimated_dur)
 
 
+from pathlib import Path
+
+DEFAULT_AUDIO_DIR = str(Path(__file__).resolve().parent.parent / "static" / "audio")
+
+
 async def generate_meeting_audio_track(
     meeting_id: int,
     segments: List[Dict[str, Any]],
-    output_dir: str = "backend/app/static/audio",
+    output_dir: str = DEFAULT_AUDIO_DIR,
     meeting_duration_sec: int = 60
 ) -> Optional[Dict[str, Any]]:
     """

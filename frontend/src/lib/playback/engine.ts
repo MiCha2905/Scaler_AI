@@ -106,6 +106,16 @@ export class SimulatedEngine implements PlaybackEngine {
   }
 }
 
+function resolveAudioUrl(url: string): string {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("blob:")) {
+    return url;
+  }
+  const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+  const backendRoot = apiBase.replace(/\/api\/?$/, "");
+  return `${backendRoot}${url.startsWith("/") ? "" : "/"}${url}`;
+}
+
 export class AudioEngine implements PlaybackEngine {
   private audio: HTMLAudioElement;
   private durationSec: number;
@@ -114,7 +124,8 @@ export class AudioEngine implements PlaybackEngine {
   private listeners: Set<(timeSec: number, isPlaying: boolean) => void> = new Set();
 
   constructor(audioUrl: string, durationSec: number) {
-    this.audio = new Audio(audioUrl);
+    const fullUrl = resolveAudioUrl(audioUrl);
+    this.audio = new Audio(fullUrl);
     this.durationSec = durationSec;
 
     this.audio.addEventListener("play", () => {

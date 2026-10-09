@@ -2,13 +2,14 @@ import pytest
 import io
 from datetime import datetime, timedelta
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from backend.app.core.database import Base, get_db
 from backend.app.main import app
+from backend.app.models.models import Comment, TranscriptSegment, Meeting
 from backend.app.seed.seed_data import seed_database
 from backend.app.services.parser_service import parse_vtt, parse_json_transcript, parse_txt, synthesize_timestamps
 
@@ -21,11 +22,11 @@ test_engine = create_engine(
     poolclass=StaticPool,
 )
 
-@event.listens_for(test_engine, "connect")
-def set_sqlite_pragma(dbapi_conn, _):
-    cur = dbapi_conn.cursor()
-    cur.execute("PRAGMA foreign_keys=ON")
-    cur.close()
+# @event.listens_for(test_engine, "connect")
+# def set_sqlite_pragma(dbapi_conn, _):
+#     cur = dbapi_conn.cursor()
+#     cur.execute("PRAGMA foreign_keys=ON")
+#     cur.close()
 
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 
@@ -367,3 +368,73 @@ def test_export_markdown(client):
     assert "text/markdown" in res.headers["content-type"]
     assert "# Engineering Sprint Retrospective" in res.text
     assert "## Transcript" in res.text
+
+
+# ----------------------------------------------------
+# 12. Comments 3NF Invariants & Cascades
+# ----------------------------------------------------
+
+def test_meeting_cascade_deletes_comments(client):
+    # Meeting 1 has transcript segments. Let's create a comment on segment 1.
+    res = client.post(
+        "/api/meetings/1/comments",
+        json={"segment_id": 1, "body": "Key product takeaway"}
+    )
+    assert res.status_code == 201
+    comment_data = res.json()
+    comment_id = comment_data["id"]
+
+    db = TestingSessionLocal()
+    # Verify comment exists in database
+    comment = db.query(Comment).filter(Comment.id == comment_id).first()
+    assert comment is not None
+
+    # Delete Meeting 1
+    del_res = client.delete("/api/meetings/1")
+    assert del_res.status_code == 204
+
+    # Verify comment was cascade-deleted (via Meeting -> Segment -> Comment cascade with PRAGMA foreign_keys=ON)
+    deleted_comment = db.query(Comment).filter(Comment.id == comment_id).first()
+    assert deleted_comment is None
+    db.close()
+
+
+def test_create_comment_cross_meeting_segment_fails_422(client):
+    # Segment 1 belongs to Meeting 1. Attempting to add a comment to Meeting 2 with segment 1 must fail with 422.
+    res = client.post(
+        "/api/meetings/2/comments",
+        json={"segment_id": 1, "body": "Cross-meeting attempt"}
+    )
+    assert res.status_code == 422
+    data = res.json()
+    assert data["error"]["code"] == "invalid_segment"
+
+
+def test_sqlite_pragma_foreign_keys_and_raw_sql_cascade():
+    # 1. Direct verification that PRAGMA foreign_keys is ON on a fresh raw connection
+    with test_engine.connect() as conn:
+        pragma_val = conn.execute(text("PRAGMA foreign_keys")).scalar()
+        assert pragma_val == 1, "PRAGMA foreign_keys must be enabled (1)"
+
+        # 2. Insert a comment on segment 1 via raw SQL
+        conn.execute(
+            text("INSERT INTO comments (segment_id, body, kind, created_at) VALUES (1, 'Raw SQL note', 'comment', datetime('now'))")
+        )
+        conn.commit()
+
+        # Confirm comment exists
+        comment_count = conn.execute(text("SELECT COUNT(*) FROM comments WHERE segment_id = 1")).scalar()
+        assert comment_count >= 1
+
+        # 3. Delete meeting 1 via RAW SQL (bypassing ORM session entirely)
+        conn.execute(text("DELETE FROM meetings WHERE id = 1"))
+        conn.commit()
+
+        # 4. Assert SQLite engine-level foreign key cascade deleted child segments AND grandchild comments
+        remaining_segments = conn.execute(text("SELECT COUNT(*) FROM transcript_segments WHERE meeting_id = 1")).scalar()
+        assert remaining_segments == 0, "All segments for meeting 1 must be deleted by SQLite engine cascade"
+
+        remaining_comments = conn.execute(text("SELECT COUNT(*) FROM comments WHERE segment_id = 1")).scalar()
+        assert remaining_comments == 0, "All comments for segment 1 must be cascade-deleted by SQLite engine without ORM involvement"
+
+

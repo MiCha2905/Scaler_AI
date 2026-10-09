@@ -38,6 +38,12 @@ build/
 *.swp
 *.swo
 
-# Audio uploads cache (keep dir structure)
+# Audio cache (whitelist seeded meetings for production deployment)
 backend/app/static/audio/*.mp3
+!backend/app/static/audio/meeting_1.mp3
+!backend/app/static/audio/meeting_2.mp3
+!backend/app/static/audio/meeting_3.mp3
+!backend/app/static/audio/meeting_4.mp3
+!backend/app/static/audio/meeting_5.mp3
+!backend/app/static/audio/meeting_6.mp3
 !backend/app/static/audio/.gitkeep

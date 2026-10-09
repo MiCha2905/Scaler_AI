@@ -12,9 +12,10 @@ import {
   ChatAnswer,
 } from "@/types/api";
 
-const API_BASE =
+const rawBase =
   process.env.NEXT_PUBLIC_API_URL ||
   (typeof window !== "undefined" ? "/api" : "http://127.0.0.1:8000/api");
+const API_BASE = rawBase.replace(/\/+$/, "");
 
 export class ApiError extends Error {
   code: string;

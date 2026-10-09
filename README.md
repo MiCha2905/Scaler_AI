@@ -175,5 +175,41 @@ Base path: `/api`
 
 ---
 
+## 🚀 Deployment Guide (Render / Railway & Vercel)
+
+### 1. Backend Deployment (Render / Railway)
+- **Runtime**: Python 3.11+
+- **Build Command**: `pip install -r backend/requirements.txt` (or `pip install fastapi uvicorn[standard] sqlalchemy pydantic edge-tts python-multipart httpx python-dotenv`)
+- **Start Command**: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
+- **Environment Variables**:
+  ```ini
+  DATABASE_URL=sqlite:///./fireflies.db
+  CORS_ORIGINS=https://your-frontend.vercel.app,http://localhost:3000
+  GROQ_API_KEY=your_groq_api_key_optional
+  OPENAI_API_KEY=your_openai_api_key_optional
+  ```
+- **Health Verification**: Verify `GET /api/health` returns `{"status": "ok", "database": "connected"}` and `GET /api/meetings` returns the 6 seeded meetings on startup.
+- **Idempotent Seeding**: The backend startup lifecycle checks `db.query(Meeting).count() == 0` before seeding, preventing duplicate entries on server restarts.
+
+### 2. Frontend Deployment (Vercel)
+- **Framework Preset**: Next.js
+- **Root Directory**: `frontend`
+- **Environment Variables**:
+  ```ini
+  NEXT_PUBLIC_API_URL=https://your-backend.onrender.com/api
+  ```
+- **CORS Verification**: Open the browser Developer Console on your deployed Vercel site and confirm requests to `/api/meetings` return without CORS header errors.
+
+---
+
+## ⚠️ Persistence & Known Limitations
+
+1. **Ephemeral Disks on Free Tier Hosts**:
+   On free-tier serverless hosting (e.g. standard Render free tier), the local filesystem resets when the container spins down. Because SQLite stores data in `fireflies.db`, any newly created meetings or audio files will reset back to the initial seeded state upon container restarts unless a **Render Persistent Disk Volume** is mounted at `/data/fireflies.db`.
+2. **Audio File Retention**:
+   Generated MP3 audio files are saved to `backend/app/static/audio/`. In serverless/stateless container environments, configure object storage (e.g. AWS S3 or Cloudflare R2) if audio files need to persist across container rebuilds.
+
+---
+
 ## 📄 License
 MIT License

@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from pydantic import BaseModel, Field
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, contains_eager
 from sqlalchemy import or_, desc
 
 from backend.app.core.database import get_db
@@ -125,11 +125,16 @@ def global_search(
 
 @router.get("/meetings/{meeting_id}/comments", response_model=List[CommentResponse])
 def list_comments(meeting_id: int, db: Session = Depends(get_db)):
+    meeting = get_meeting(db, meeting_id)
+    if not meeting:
+        raise HTTPException(status_code=404, detail={"error": {"code": "not_found", "message": "Meeting not found", "details": []}})
+
     comments = (
         db.query(Comment)
         .join(TranscriptSegment, Comment.segment_id == TranscriptSegment.id)
+        .options(contains_eager(Comment.segment))
         .filter(TranscriptSegment.meeting_id == meeting_id)
-        .order_by(Comment.created_at.asc())
+        .order_by(TranscriptSegment.start_sec.asc(), Comment.created_at.asc())
         .all()
     )
     return [CommentResponse.model_validate(c) for c in comments]
@@ -142,11 +147,16 @@ def create_comment(meeting_id: int, comment_in: CommentCreate, db: Session = Dep
         raise HTTPException(status_code=404, detail={"error": {"code": "not_found", "message": "Meeting not found", "details": []}})
 
     seg = db.query(TranscriptSegment).filter(
-        TranscriptSegment.id == comment_in.segment_id,
-        TranscriptSegment.meeting_id == meeting_id
+        TranscriptSegment.id == comment_in.segment_id
     ).first()
     if not seg:
         raise HTTPException(status_code=404, detail={"error": {"code": "not_found", "message": "Transcript segment not found", "details": []}})
+
+    if seg.meeting_id != meeting_id:
+        raise HTTPException(
+            status_code=422,
+            detail={"error": {"code": "invalid_segment", "message": "Transcript segment does not belong to this meeting", "details": []}}
+        )
 
     c = Comment(
         segment_id=comment_in.segment_id,

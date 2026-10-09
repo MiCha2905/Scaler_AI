@@ -17,10 +17,17 @@ from backend.app.seed.seed_data import seed_database
 from backend.app.routers import meetings, action_items, participants, tags, health, bonus
 
 
+from pathlib import Path
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+AUDIO_DIR = STATIC_DIR / "audio"
+AUDIO_DIR.mkdir(parents=True, exist_ok=True)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Ensure static directories exist
-    os.makedirs("backend/app/static/audio", exist_ok=True)
+    AUDIO_DIR.mkdir(parents=True, exist_ok=True)
     # Initialize DB tables
     Base.metadata.create_all(bind=engine)
     # Run idempotent seed loader
@@ -41,9 +48,8 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Static files for real audio tracks
-os.makedirs("backend/app/static/audio", exist_ok=True)
-app.mount("/static", StaticFiles(directory="backend/app/static"), name="static")
+# Static files for real audio tracks (robust absolute path)
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 # CORS configuration
 origins = [
