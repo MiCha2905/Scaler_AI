@@ -329,7 +329,10 @@ export default function MeetingDetailPage() {
           duration={meeting.duration_sec}
           isPlaying={player.isPlaying}
           isRealAudio={Boolean(meeting.audio_url)}
+          hasAudio={Boolean(meeting.audio_url)}
           disabled={meeting.duration_sec <= 0}
+          isGeneratingAudio={synthesizingAudio}
+          onGenerateAudio={handleGenerateAudio}
           onTogglePlay={player.togglePlay}
           onSeek={player.seek}
           onSkipForward={player.skipForward}
