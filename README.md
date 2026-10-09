@@ -240,5 +240,16 @@ Base path: `/api`
 
 ---
 
+## 📌 Assumptions, Mocked Data & Notes
+
+See the dedicated documentation file: [`ASSUMPTIONS_AND_NOTES.md`](file:///Users/sonali/Desktop/Scaler_AI/ASSUMPTIONS_AND_NOTES.md).
+
+* **Assumptions**: Active user is modeled as **Sarah Chen** (*Product Lead & Host*); meeting duration $\text{duration\_sec} = \lceil\max(\text{end\_sec})\rceil$ ensures zero playback drift ($< 0.5\,\text{s}$); dual-engine playback (HTML5 range streaming + `performance.now()` clock fallback); 3NF SQLite schema with active cascade deletes.
+* **Mocked Data**: 6 pre-seeded realistic enterprise meetings in `seeded_meetings.json`; pre-synthesized neural multi-speaker MP3s (Edge Neural Voice personas); smart deterministic offline heuristic NLP fallback when external LLM API keys are absent.
+* **Technical Notes**: Render free tier has ~30–50s cold start wake times and ephemeral storage on redeployments; dynamic CORS regex enabled for all `*.vercel.app` domains.
+
+---
+
 ## 📄 License
 MIT License
+
