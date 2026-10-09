@@ -8,7 +8,7 @@ Built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, **Fast
 
 ## 🌐 Live Deployment
 
-- **Frontend (Vercel)**: `https://<your-vercel-app>.vercel.app`
+- **Frontend Application (Vercel)**: [`https://scaler-ai-zeta.vercel.app`](https://scaler-ai-zeta.vercel.app)
 - **Backend API & Swagger (Render)**: [`https://scaler-ai-backend-q590.onrender.com`](https://scaler-ai-backend-q590.onrender.com) / [Interactive API Docs](https://scaler-ai-backend-q590.onrender.com/docs)
 - **API Health Check**: [`https://scaler-ai-backend-q590.onrender.com/api/health`](https://scaler-ai-backend-q590.onrender.com/api/health)
 
